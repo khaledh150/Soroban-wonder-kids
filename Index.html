@@ -1,227 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Soroban Web</title>
-
-<!-- ============ theme + layout ============ -->
-<style>
-:root{
-  --wood:#8B4513;          /* frame colour          */
-  --rod: #D2B48C;          /* rod colour            */
-  --bar: #000;             /* reckoning bar colour  */
-  --bead-dark:#222;        /* inactive bead         */
-  --bead-light:#555;       /* inactive highlight    */
-  --bead-active:#F5B041;   /* counted bead          */
-  --bead-press :#FFD700;   /* finger-down tint      */
-}
-
-*{box-sizing:border-box;-webkit-user-select:none;user-select:none;margin:0;padding:0}
-
-html,body{
-  width:100vw;height:100dvh;display:flex;justify-content:center;align-items:center;
-  background:#fff;font-family:sans-serif;overflow:hidden;touch-action:none;
-}
-
-#board{display:flex;gap:6px;padding:12px;background:var(--wood);border-radius:12px;
-       box-shadow:0 0 18px rgba(0,0,0,.25);flex-wrap:wrap}
-.rod{position:relative;display:flex;flex-direction:column;align-items:center;
-     background:var(--rod);border-radius:6px;width:60px;height:280px}
-.rod-line{position:absolute;top:0;bottom:0;width:4px;background:var(--bar)}
-.bar{position:absolute;top:30%;left:0;right:0;height:8px;background:var(--bar);z-index:2}
-
-.heaven,.gap-space,.earth{display:flex;flex-direction:column;align-items:center;z-index:3}
-.heaven{justify-content:flex-end;height:12%}
-.gap-space{height:8%}
-.earth{justify-content:flex-start;height:52%;margin-top:5px}
-
-.bead{
-  width:52px;height:32px;border-radius:50%/42%;will-change:transform;background:
-  radial-gradient(circle at 30% 30%,var(--bead-light),var(--bead-dark));
-  box-shadow:inset -2px -2px 4px rgba(255,255,255,.25),
-             inset  2px  2px 4px rgba(0,0,0,.4);
-  transition:transform .15s ease,background-color .15s ease;
-}
-.bead.active{
-  background:radial-gradient(circle at 30% 30%,var(--bead-active),#b26500);
-}
-.bead.grabbed{transition:none}
-.bead.pressed{
-  background:radial-gradient(circle at 30% 30%,var(--bead-press),#ff9c00);
-}
-
-.digit{
-  position:absolute;top:-2.0em;font-size:1.2em;font-weight:600;color:#333;
-  pointer-events:none;user-select:none
-}
-
-@media(max-width:768px){.rod{width:56px;height:250px}.bead{width:44px;height:26px}}
-@media(max-width:480px){.rod{width:50px;height:220px}.bead{width:38px;height:23px}}
-
-@media screen and (orientation:portrait){
-  body::before{
-    content:"Please rotate your device";position:fixed;inset:0;background:#000;color:#fff;
-    display:flex;justify-content:center;align-items:center;font-size:2rem;padding:1em;z-index:9999}
-  #board{display:none}
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Soroban Menu</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #1f1f1f;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .card {
+      background: #2f2f2f;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .btn {
+      background: #444;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #666;
+    }
+  </style>
 </head>
-
 <body>
-<div id="board"></div>
-
-<!-- ============ logic ============ -->
-<script>
-/* -----------------------------------------------------------------
-   Soroban – full-feature touch layer
-   ----------------------------------------------------------------- */
-(() => {
-/* configuration toggles */
-const SETTINGS = {
-  rods        : +localStorage.getItem('rods')       || 13, // default rod count
-  haptic      : JSON.parse(localStorage.getItem('haptic') ?? 'true'),
-  deadZone    : 10,      // px
-  swipeDelay  : 40,      // ms
-  shakeG      : 16,      // m/s²
-  shakeGap    : 750,     // ms cooldown
-  hapticMs    : 12       // ms per click
-};
-
-/* quick UI to alter rod count / haptic --------------------------- */
-addEventListener('keydown',e=>{
-  if(e.key==='-'){SETTINGS.rods=Math.max(3,SETTINGS.rods-1);saveSettings();rebuild();}
-  if(e.key==='='||e.key==='+'){SETTINGS.rods=Math.min(25,SETTINGS.rods+1);saveSettings();rebuild();}
-  if(e.key==='h'){SETTINGS.haptic=!SETTINGS.haptic;saveSettings();}
-});
-function saveSettings(){
-  localStorage.setItem('rods',SETTINGS.rods);
-  localStorage.setItem('haptic',JSON.stringify(SETTINGS.haptic));
-}
-
-/* build board DOM ----------------------------------------------- */
-const board = document.getElementById('board');
-function buildRod(){
-  const rod = document.createElement('div'); rod.className='rod';
-  rod.innerHTML = `
-    <div class="rod-line"></div>
-    <div class="digit">0</div>
-    <div class="heaven"><div class="bead heaven"></div></div>
-    <div class="gap-space"></div>
-    <div class="earth">
-      <div class="bead earth"></div><div class="bead earth"></div>
-      <div class="bead earth"></div><div class="bead earth"></div>
-    </div>
-    <div class="bar"></div>`;
-  return rod;
-}
-function rebuild(){
-  board.innerHTML='';       // clear
-  for(let i=0;i<SETTINGS.rods;i++) board.appendChild(buildRod());
-  attachBeadEvents();
-  updateDigits();
-}
-rebuild();
-
-/* state tracking per pointer ------------------------------------ */
-const touches=new Map(); // pointerId → {bead,region,startX,startY,lastRod,mode,moved,lastCopy}
-
-/* helper: activate/deactivate ----------------------------------- */
-function setBead(bead,activate){
-  const heaven=bead.classList.contains('heaven');
-  if(heaven){
-    bead.classList.toggle('active',activate);
-  }else{
-    const earths=[...bead.parentElement.children];
-    const idx=earths.indexOf(bead);
-    if(activate){for(let i=idx;i>=0;i--)earths[i].classList.add('active');}
-    else{for(let i=idx;i<earths.length;i++)earths[i].classList.remove('active');}
-  }
-  if(SETTINGS.haptic && navigator.vibrate) navigator.vibrate(SETTINGS.hapticMs);
-  updateDigits();
-}
-
-/* update digit overlay ------------------------------------------ */
-function updateDigits(){
-  document.querySelectorAll('.rod').forEach(rod=>{
-    const heaven = rod.querySelector('.bead.heaven').classList.contains('active') ? 5 : 0;
-    const earth  = rod.querySelectorAll('.bead.earth.active').length;
-    rod.querySelector('.digit').textContent = heaven + earth;
-  });
-}
-
-/* attach events to every bead ----------------------------------- */
-function attachBeadEvents(){
-  board.style.touchAction='none';
-  board.querySelectorAll('.bead').forEach(bead=>{
-    bead.addEventListener('pointerdown',onDown);
-    bead.addEventListener('pointermove', onMove);
-    bead.addEventListener('pointerup',   onUpCancel);
-    bead.addEventListener('pointercancel',onUpCancel);
-  });
-}
-
-/* pointer handlers ---------------------------------------------- */
-function onDown(e){
-  const bead=e.currentTarget;
-  bead.setPointerCapture(e.pointerId);
-  bead.classList.add('pressed','grabbed');
-  touches.set(e.pointerId,{
-    bead,
-    region:bead.classList.contains('heaven')?'heaven':'earth',
-    startX:e.clientX,startY:e.clientY,lastRod:bead.closest('.rod'),
-    mode:null,moved:false,lastCopy:performance.now()
-  });
-}
-function onMove(e){
-  const t=touches.get(e.pointerId); if(!t)return;
-  const dx=e.clientX-t.startX,dy=e.clientY-t.startY;
-  if(!t.moved && Math.hypot(dx,dy)>SETTINGS.deadZone) t.moved=true;
-
-  /* decide activate/deactivate once */
-  if(t.mode===null && t.moved){
-    t.mode = (t.region==='heaven')
-      ? (dy>0?'activate':'deactivate')
-      : (dy<0?'activate':'deactivate');
-    setBead(t.bead,t.mode==='activate');
-  }
-
-  /* slide-across copy */
-  if(t.mode && performance.now()-t.lastCopy>SETTINGS.swipeDelay){
-    const el=document.elementFromPoint(e.clientX,e.clientY);
-    const rod=el?.closest?.('.rod');
-    if(rod && rod!==t.lastRod){
-      const target = t.region==='heaven'
-        ? rod.querySelector('.bead.heaven')
-        : [...rod.querySelectorAll('.bead.earth')].pop();
-      if(target) setBead(target,t.mode==='activate');
-      t.lastRod=rod; t.lastCopy=performance.now();
-    }
-  }
-}
-function onUpCancel(e){
-  const t=touches.get(e.pointerId); if(!t)return;
-  t.bead.classList.remove('pressed','grabbed');
-  touches.delete(e.pointerId);
-}
-
-/* shake-to-reset ----------------------------------------------- */
-if(window.DeviceMotionEvent){
-  let last=0;
-  addEventListener('devicemotion',ev=>{
-    const {x,y,z}=ev.accelerationIncludingGravity||{};
-    if(x==null)return;
-    const mag=Math.hypot(x,y,z);
-    const now=performance.now();
-    if(mag>SETTINGS.shakeG && now-last>SETTINGS.shakeGap){
-      board.querySelectorAll('.bead.active').forEach(b=>b.classList.remove('active'));
-      updateDigits();
-      last=now;
-    }
-  });
-}
-})();
-</script>
+  <div class="card">
+    <h1>เพิ่ม ลด ขน ล้าง</h1>
+    <button class="btn" onclick="window.open('#', '_blank')">LEARN</button>
+    <button class="btn" onclick="location.href='quiz.html'">START</button>
+  </div>
 </body>
 </html>

@@ -54,9 +54,9 @@
 
   <!-- 🧮 Main Card -->
   <div class="card">
-    <h1 id="mainTitle">เพิ่ม ลด ขน ล้าง</h1>
-    <button class="btn" onclick="openLearn()" id="learnBtn">เรียนรู้</button>
-    <button class="btn" onclick="location.href='quiz.html'" id="startBtn">เริ่ม</button>
+    <h1 id="mainTitle">Soroban Menu</h1>
+    <button class="btn" onclick="openLearn()" id="learnBtn">LEARN</button>
+    <button class="btn" onclick="location.href='quiz.html'" id="startBtn">START</button>
   </div>
 
   <!-- 🌐 Language + Learn Logic -->
@@ -92,7 +92,7 @@
     }
 
     window.onload = () => {
-      const lang = localStorage.getItem("lang") || "th";
+      const lang = localStorage.getItem("lang") || "en"; // <-- default to English
       setLanguage(lang);
     };
   </script>

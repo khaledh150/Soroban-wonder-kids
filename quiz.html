@@ -1,3 +1,7 @@
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
+if (!user) {
+  window.location.href = "login.html"; // redirect if not logged in
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>

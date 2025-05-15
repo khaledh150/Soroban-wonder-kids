@@ -1,1 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Login - Wonder Kids</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #b993d6, #8ca6db);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      display: flex;
+      width: 90%;
+      max-width: 900px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      background: white;
+    }
+    .welcome-section {
+      background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+      color: white;
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .welcome-section h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .welcome-section p {
+      font-size: 16px;
+    }
+    .login-section {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .login-section h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .role-tabs {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .role-tabs button {
+      flex: 1;
+      padding: 10px;
+      margin: 0 5px;
+      border: none;
+      border-radius: 20px;
+      background: #eee;
+      color: #333;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .role-tabs button.active {
+      background: #6a11cb;
+      color: white;
+    }
+    input {
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+      font-size: 16px;
+    }
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .remember-forgot label {
+      display: flex;
+      align-items: center;
+    }
+    .login-section button {
+      padding: 12px;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .toggle {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .toggle a {
+      color: #6a11cb;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="welcome-section">
+      <h2>Welcome back!</h2>
+      <p>You can sign in to access with your existing account.</p>
+    </div>
+    <div class="login-section">
+      <h2 id="formTitle">Sign In</h2>
+      <div class="role-tabs">
+        <button id="studentBtn" class="active" onclick="setRole('student')">Student</button>
+        <button id="tutorBtn" onclick="setRole('tutor')">Tutor</button>
+        <button id="adminBtn" onclick="setRole('admin')">Admin</button>
+      </div>
+      <input type="text" id="username" placeholder="Username or email" />
+      <input type="password" id="password" placeholder="Password" />
+      <div class="remember-forgot">
+        <label><input type="checkbox" id="remember"> Remember me</label>
+        <a style="color:#6a11cb; cursor:pointer;">Forgot password?</a>
+      </div>
+      <button onclick="submitForm()" id="submitBtn">Sign In</button>
+      <div class="toggle" id="toggleText">
+        New here? <a onclick="toggleMode()">Create an Account</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let mode = 'signin';
+    let role = 'student';
+
+    function setRole(selected) {
+      role = selected;
+      document.getElementById('studentBtn').classList.remove('active');
+      document.getElementById('tutorBtn').classList.remove('active');
+      document.getElementById('adminBtn').classList.remove('active');
+      document.getElementById(selected + 'Btn').classList.add('active');
+    }
+
+    function toggleMode() {
+      mode = mode === 'signin' ? 'signup' : 'signin';
+      document.getElementById('formTitle').textContent = mode === 'signin' ? 'Sign In' : 'Sign Up';
+      document.getElementById('submitBtn').textContent = mode === 'signin' ? 'Sign In' : 'Sign Up';
+      document.getElementById('toggleText').innerHTML = mode === 'signin'
+        ? "New here? <a onclick=\"toggleMode()\">Create an Account</a>"
+        : "Already have an account? <a onclick=\"toggleMode()\">Sign In</a>";
+    }
+
+    function submitForm() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const key = `${role}_${username}`;
+
+      if (mode === 'signin') {
+        const stored = localStorage.getItem(key);
+        if (!stored) {
+          alert('Account not found. Please sign up first.');
+        } else if (stored !== password) {
+          alert('Incorrect password.');
+        } else {
+          localStorage.setItem('loggedInUser', JSON.stringify({ role, username }));
+          window.location.href = 'home.html';
+        }
+      } else {
+        if (localStorage.getItem(key)) {
+          alert('Username already exists.');
+        } else {
+          localStorage.setItem(key, password);
+          alert('Account created! You can now sign in.');
+          toggleMode();
+        }
+      }
+    }
+  </script>
+</body>
+</html>
 

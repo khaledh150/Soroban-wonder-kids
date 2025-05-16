@@ -11,6 +11,7 @@
       background: linear-gradient(to right, #b993d6, #8ca6db);
       color: white;
       display: flex;
+      flex-wrap: wrap;
       height: 100vh;
       overflow-x: hidden;
       overflow-y: auto;
@@ -35,10 +36,11 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      padding: 60px 0 20px 0;
+      padding: 80px 0 20px 0;
       box-shadow: 2px 0 10px rgba(0,0,0,0.2);
       transition: transform 0.3s ease;
       z-index: 1000;
+      min-height: 100vh;
     }
     .sidebar.closed {
       transform: translateX(-100%);
@@ -64,22 +66,23 @@
       margin-right: 10px;
     }
     .sidebar .footer {
-      margin-top: auto;
-      padding: 20px;
-      font-size: 12px;
+      padding: 10px 30px;
       text-align: center;
     }
     .language-btn {
-      background: #444;
-      color: white;
+      background: transparent;
+      color: #333;
       border: none;
       padding: 8px 15px;
       border-radius: 5px;
       font-size: 14px;
       cursor: pointer;
+      width: 100%;
+      margin: 10px 0 0 0;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     }
     .language-btn:hover {
-      background: #666;
+      background: rgba(255, 255, 255, 0.4);
     }
     .main {
       flex: 1;
@@ -89,13 +92,14 @@
       align-items: center;
       text-align: center;
       padding: 40px;
+      min-width: 0;
     }
     .main h1 {
-      font-size: 32px;
+      font-size: clamp(24px, 4vw, 32px);
       margin-bottom: 10px;
     }
     .main .welcome {
-      font-size: 18px;
+      font-size: clamp(16px, 3vw, 18px);
       margin-bottom: 20px;
     }
     .btn {
@@ -104,7 +108,7 @@
       border: none;
       padding: 10px 20px;
       margin: 10px;
-      font-size: 18px;
+      font-size: clamp(14px, 2.5vw, 18px);
       border-radius: 5px;
       cursor: pointer;
     }
@@ -115,6 +119,7 @@
     @media (max-width: 768px) {
       .sidebar {
         width: 200px;
+        padding-top: 100px;
       }
     }
 
@@ -136,15 +141,13 @@
   <!-- Sidebar Navigation -->
   <div class="sidebar closed" id="sidebar">
     <ul>
-      <li><i>👤</i> My Account</li>
-      <li class="active"><i>📘</i> Courses</li>
-      <li><i>🧾</i> Progress</li>
-      <li><i>⚙️</i> Settings</li>
+      <li onclick="closeSidebar()"><i>👤</i> My Account</li>
+      <li class="active" onclick="closeSidebar()"><i>📘</i> Courses</li>
+      <li onclick="closeSidebar()"><i>🧾</i> Progress</li>
+      <li onclick="closeSidebar()"><i>⚙️</i> Settings</li>
       <li onclick="logout()"><i>🔓</i> Log Out</li>
+      <li><button class="language-btn" onclick="toggleLanguage()">🌐 EN / TH</button></li>
     </ul>
-    <div class="footer">
-      <button class="language-btn" onclick="toggleLanguage()">🌐 EN / TH</button>
-    </div>
   </div>
 
   <!-- Main Content Area -->
@@ -195,6 +198,13 @@
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
       sidebar.classList.toggle("closed");
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      if (window.innerWidth < 769) {
+        sidebar.classList.add("closed");
+      }
     }
 
     window.onload = () => {

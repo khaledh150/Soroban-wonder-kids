@@ -55,7 +55,12 @@
       font-size: 16px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .sidebar li span {
+      flex-grow: 1;
     }
     .sidebar li:hover, .sidebar li.active {
       background: #d0d8ee;
@@ -84,6 +89,27 @@
     .language-btn:hover {
       background: rgba(255, 255, 255, 0.4);
     }
+    .submenu {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 5px;
+      transition: all 0.3s ease;
+    }
+    .submenu li {
+      font-size: 14px;
+      padding: 6px 20px;
+      margin: 4px 0;
+      background-color: transparent;
+      border-radius: 4px;
+      color: #333;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      width: 70%;
+      text-align: center;
+    }
+    .submenu.open {
+      display: flex;
+    }
     .main {
       flex: 1;
       display: flex;
@@ -102,32 +128,13 @@
       font-size: clamp(16px, 3vw, 18px);
       margin-bottom: 20px;
     }
-    .btn {
-      background: #444;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: clamp(14px, 2.5vw, 18px);
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: #666;
-    }
-
     @media (max-width: 768px) {
       .sidebar {
         width: 200px;
         padding-top: 100px;
       }
     }
-
     @media (max-width: 480px) {
-      .btn {
-        font-size: 16px;
-        padding: 8px 16px;
-      }
       .main h1 {
         font-size: 24px;
       }
@@ -141,35 +148,36 @@
   <!-- Sidebar Navigation -->
   <div class="sidebar closed" id="sidebar">
     <ul>
-      <li onclick="closeSidebar()"><i>👤</i> My Account</li>
-      <li class="active" onclick="closeSidebar()"><i>📘</i> Courses</li>
-      <li onclick="closeSidebar()"><i>🧾</i> Progress</li>
-      <li onclick="closeSidebar()"><i>⚙️</i> Settings</li>
-      <li onclick="logout()"><i>🔓</i> Log Out</li>
+      <li onclick="closeSidebar()"><i>👤</i><span>My Account</span></li>
+      <li onclick="toggleCourses()"><i>📘</i><span>Courses</span><span id="arrow">▾</span></li>
+      <ul class="submenu" id="coursesSubmenu">
+        <li onclick="location.href='soroban.html'">Soroban</li>
+        <li onclick="closeSidebar()">English</li>
+        <li onclick="closeSidebar()">Thai</li>
+        <li onclick="closeSidebar()">Math</li>
+        <li onclick="closeSidebar()">Chinese</li>
+      </ul>
+      <li onclick="closeSidebar()"><i>🧾</i><span>Progress</span></li>
+      <li onclick="closeSidebar()"><i>⚙️</i><span>Settings</span></li>
+      <li onclick="logout()"><i>🔓</i><span>Log Out</span></li>
       <li><button class="language-btn" onclick="toggleLanguage()">🌐 EN / TH</button></li>
     </ul>
   </div>
 
   <!-- Main Content Area -->
   <div class="main">
-    <h1 id="mainTitle">Soroban Menu</h1>
+    <h1 id="mainTitle">Welcome to Wonder Kids</h1>
     <div id="userWelcome" class="welcome"></div>
-    <button class="btn" onclick="openLearn()" id="learnBtn">LEARN</button>
-    <button class="btn" onclick="location.href='quiz.html'" id="startBtn">START</button>
   </div>
 
   <!-- Language + Auth Logic -->
   <script>
     const translations = {
       en: {
-        title: "Soroban Menu",
-        learn: "LEARN",
-        start: "START"
+        title: "Welcome to Wonder Kids"
       },
       th: {
-        title: "เพิ่ม ลด ขน ล้าง",
-        learn: "เรียนรู้",
-        start: "เริ่ม"
+        title: "ยินดีต้อนรับสู่วันเดอร์คิดส์"
       }
     };
 
@@ -182,12 +190,6 @@
       localStorage.setItem("lang", lang);
       const t = translations[lang];
       document.getElementById("mainTitle").textContent = t.title;
-      document.getElementById("learnBtn").textContent = t.learn;
-      document.getElementById("startBtn").textContent = t.start;
-    }
-
-    function openLearn() {
-      window.open("https://www.youtube.com/watch?v=ERszReAojK0&ab_channel=KarenGoBrrr", "_blank");
     }
 
     function logout() {
@@ -205,6 +207,13 @@
       if (window.innerWidth < 769) {
         sidebar.classList.add("closed");
       }
+    }
+
+    function toggleCourses() {
+      const submenu = document.getElementById("coursesSubmenu");
+      const arrow = document.getElementById("arrow");
+      submenu.classList.toggle("open");
+      arrow.textContent = submenu.classList.contains("open") ? "▴" : "▾";
     }
 
     window.onload = () => {

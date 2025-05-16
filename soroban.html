@@ -461,26 +461,6 @@
                         setBead(t.bead, t.mode === "activate");
                     }
 
-                    /* side-sweep: if we crossed into a new rod, copy the action ----- */
-                    if (t.mode && performance.now() - t.lastCopy > SWIPE_DELAY) {
-                        const elem = document.elementFromPoint(e.clientX, e.clientY);
-                        const rod = elem?.closest?.(".rod");
-
-                        if (rod && rod !== t.lastRod) {
-                            const otherBead = rod.querySelector(`.bead.${t.region}`);
-                            if (otherBead) {
-                                setBead(otherBead, t.mode === "activate");
-                                t.lastRod = rod;
-                                t.lastCopy = performance.now();
-                            }
-                            // bottom earth
-                            if (target) setBead(target, t.mode === "activate");
-                            t.lastRod = rod;
-                            t.lastCopy = performance.now();
-                        }
-                    }
-                }
-
                 function onUpCancel(e) {
                     const t = touches.get(e.pointerId);
                     if (!t) return;

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background: #1f1f1f;
+      background: linear-gradient(to right, #b993d6, #8ca6db);
       color: white;
       display: flex;
       align-items: center;
@@ -16,9 +17,9 @@
       height: 100vh;
     }
     .card {
-      background: #2f2f2f;
-      padding: 20px;
-      border-radius: 10px;
+      background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+      padding: 5px;
+      border-radius: 30px;
       width: 90%;
       max-width: 400px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
@@ -27,28 +28,65 @@
       align-items: center;
     }
     .result-item {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      margin: 5px 0;
-      font-size: 18px;
-    }
-    .btn {
-      background: #444;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 20px;
-      font-size: 18px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: #666;
-    }
-    h2 {
-      margin-bottom: 10px;
-    }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 15px;
+  margin: 6px 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  transition: background 0.3s;
+}
+
+.result-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  color: #ffffff;
+}
+
+#scoreLine {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.btn {
+  background: #4d79ff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  margin-top: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btn:hover {
+  background: #3b5ccc;
+  transform: scale(1.05);
+}
+
   </style>
 </head>
 <body>

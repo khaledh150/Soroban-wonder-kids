@@ -12,42 +12,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
     }
     .container {
       display: flex;
-      width: 90%;
-      max-width: 900px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
-      border-radius: 10px;
-      overflow: hidden;
+      flex-direction: column;
+      width: 100%;
+      max-width: 400px;
       background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      padding: 30px 20px;
     }
-    .welcome-section {
-      background: linear-gradient(to bottom right, #6a11cb, #2575fc);
-      color: white;
-      flex: 1;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .welcome-section h2 {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-    .welcome-section p {
-      font-size: 16px;
-    }
-    .login-section {
-      flex: 1;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .login-section h2 {
-      font-size: 28px;
+    h2 {
+      font-size: clamp(20px, 5vw, 28px);
+      text-align: center;
       margin-bottom: 20px;
       color: #333;
     }
@@ -55,17 +36,18 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 20px;
+      gap: 5px;
     }
     .role-tabs button {
       flex: 1;
       padding: 10px;
-      margin: 0 5px;
       border: none;
       border-radius: 20px;
       background: #eee;
       color: #333;
       cursor: pointer;
       font-weight: bold;
+      font-size: clamp(12px, 3vw, 16px);
     }
     .role-tabs button.active {
       background: #6a11cb;
@@ -78,6 +60,7 @@
       border: 1px solid #ccc;
       width: 100%;
       font-size: 16px;
+      box-sizing: border-box;
     }
     .remember-forgot {
       display: flex;
@@ -88,8 +71,26 @@
     .remember-forgot label {
       display: flex;
       align-items: center;
+      gap: 5px;
     }
-    .login-section button {
+    .password-wrapper {
+      position: relative;
+    }
+    .password-wrapper input {
+      width: 100%;
+      padding-right: 40px;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button {
       padding: 12px;
       background: linear-gradient(to right, #6a11cb, #2575fc);
       border: none;
@@ -108,31 +109,43 @@
       cursor: pointer;
       text-decoration: none;
     }
+    .language-switch {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    .language-switch button {
+      padding: 6px 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+  <div class="language-switch">
+    <button onclick="toggleLanguage()">🌐 EN / TH</button>
+  </div>
   <div class="container">
-    <div class="welcome-section">
-      <h2>Welcome back!</h2>
-      <p>You can sign in to access with your existing account.</p>
+    <h2 id="formTitle">Sign In</h2>
+    <div class="role-tabs">
+      <button id="studentBtn" class="active" onclick="setRole('student')">Student</button>
+      <button id="tutorBtn" onclick="setRole('tutor')">Tutor</button>
+      <button id="adminBtn" onclick="setRole('admin')">Admin</button>
     </div>
-    <div class="login-section">
-      <h2 id="formTitle">Sign In</h2>
-      <div class="role-tabs">
-        <button id="studentBtn" class="active" onclick="setRole('student')">Student</button>
-        <button id="tutorBtn" onclick="setRole('tutor')">Tutor</button>
-        <button id="adminBtn" onclick="setRole('admin')">Admin</button>
-      </div>
-      <input type="text" id="username" placeholder="Username or email" />
+    <input type="text" id="username" placeholder="Username or email" />
+    <div class="password-wrapper">
       <input type="password" id="password" placeholder="Password" />
-      <div class="remember-forgot">
-        <label><input type="checkbox" id="remember"> Remember me</label>
-        <a style="color:#6a11cb; cursor:pointer;">Forgot password?</a>
-      </div>
-      <button onclick="submitForm()" id="submitBtn">Sign In</button>
-      <div class="toggle" id="toggleText">
-        New here? <a onclick="toggleMode()">Create an Account</a>
-      </div>
+      <button class="toggle-password" onclick="togglePassword()">👁️</button>
+    </div>
+    <div class="remember-forgot">
+      <label><input type="checkbox" id="remember"> Remember me</label>
+      <a style="color:#6a11cb; cursor:pointer;">Forgot password?</a>
+    </div>
+    <button onclick="submitForm()" id="submitBtn">Sign In</button>
+    <div class="toggle" id="toggleText">
+      New here? <a onclick="toggleMode()">Create an Account</a>
     </div>
   </div>
 
@@ -140,55 +153,77 @@
     let mode = 'signin';
     let role = 'student';
 
+    const translations = {
+      en: { signin: "Sign In", signup: "Sign Up", create: "Create an Account", have: "Already have an account?" },
+      th: { signin: "เข้าสู่ระบบ", signup: "สมัครสมาชิก", create: "สร้างบัญชี", have: "มีบัญชีอยู่แล้ว?" }
+    };
+
     function setRole(selected) {
       role = selected;
-      document.getElementById('studentBtn').classList.remove('active');
-      document.getElementById('tutorBtn').classList.remove('active');
-      document.getElementById('adminBtn').classList.remove('active');
+      ['student', 'tutor', 'admin'].forEach(r => document.getElementById(r + 'Btn').classList.remove('active'));
       document.getElementById(selected + 'Btn').classList.add('active');
+    }
+
+    function togglePassword() {
+      const pwd = document.getElementById('password');
+      pwd.type = pwd.type === 'password' ? 'text' : 'password';
+    }
+
+    function toggleLanguage() {
+      const lang = localStorage.getItem('lang') === 'th' ? 'en' : 'th';
+      setLanguage(lang);
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('lang', lang);
+      const t = translations[lang];
+      document.getElementById('formTitle').textContent = mode === 'signin' ? t.signin : t.signup;
+      document.getElementById('submitBtn').textContent = mode === 'signin' ? t.signin : t.signup;
+      document.getElementById('toggleText').innerHTML =
+        mode === 'signin' ? `New here? <a onclick="toggleMode()">${t.create}</a>` : `${t.have} <a onclick="toggleMode()">${t.signin}</a>`;
     }
 
     function toggleMode() {
       mode = mode === 'signin' ? 'signup' : 'signin';
-      document.getElementById('formTitle').textContent = mode === 'signin' ? 'Sign In' : 'Sign Up';
-      document.getElementById('submitBtn').textContent = mode === 'signin' ? 'Sign In' : 'Sign Up';
-      document.getElementById('toggleText').innerHTML = mode === 'signin'
-        ? "New here? <a onclick=\"toggleMode()\">Create an Account</a>"
-        : "Already have an account? <a onclick=\"toggleMode()\">Sign In</a>";
+      const lang = localStorage.getItem('lang') || 'en';
+      setLanguage(lang);
     }
 
     function submitForm() {
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
-
-      if (!username || !password) {
-        alert('Please fill in all fields.');
-        return;
-      }
-
+      const remember = document.getElementById('remember').checked;
       const key = `${role}_${username}`;
+
+      if (!username || !password) return alert('Please fill in all fields.');
 
       if (mode === 'signin') {
         const stored = localStorage.getItem(key);
-        if (!stored) {
-          alert('Account not found. Please sign up first.');
-        } else if (stored !== password) {
-          alert('Incorrect password.');
-        } else {
-          localStorage.setItem('loggedInUser', JSON.stringify({ role, username }));
-          window.location.href = 'home.html';
-        }
+        if (!stored) return alert('Account not found. Please sign up first.');
+        if (stored !== password) return alert('Incorrect password.');
+        const user = { role, username };
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        if (remember) localStorage.setItem('rememberMe', JSON.stringify(user));
+        window.location.href = 'home.html';
       } else {
-        if (localStorage.getItem(key)) {
-          alert('Username already exists.');
-        } else {
-          localStorage.setItem(key, password);
-          alert('Account created! You can now sign in.');
-          toggleMode();
-        }
+        if (localStorage.getItem(key)) return alert('Username already exists.');
+        localStorage.setItem(key, password);
+        alert('Account created! You can now sign in.');
+        toggleMode();
+      }
+    }
+
+    window.onload = () => {
+      const lang = localStorage.getItem('lang') || 'en';
+      setLanguage(lang);
+
+      const remembered = localStorage.getItem('rememberMe');
+      if (remembered) {
+        const user = JSON.parse(remembered);
+        localStorage.setItem('loggedInUser', remembered);
+        window.location.href = 'home.html';
       }
     }
   </script>
 </body>
 </html>
-

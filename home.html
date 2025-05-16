@@ -17,7 +17,7 @@
       overflow-y: auto;
     }
     .sidebar-toggle {
-      position: absolute;
+      position: fixed;
       top: 20px;
       left: 20px;
       background: rgba(255, 255, 255, 0.8);
@@ -41,6 +41,9 @@
       transition: transform 0.3s ease;
       z-index: 1000;
       min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
     }
     .sidebar.closed {
       transform: translateX(-100%);
@@ -69,10 +72,6 @@
     }
     .sidebar li i {
       margin-right: 10px;
-    }
-    .sidebar .footer {
-      padding: 10px 30px;
-      text-align: center;
     }
     .language-btn {
       background: transparent;
@@ -118,7 +117,13 @@
       align-items: center;
       text-align: center;
       padding: 40px;
-      min-width: 0;
+      margin-left: 250px;
+      transition: margin-left 0.3s ease;
+      width: calc(100% - 250px);
+    }
+    .sidebar.closed + .main {
+      margin-left: 0;
+      width: 100%;
     }
     .main h1 {
       font-size: clamp(24px, 4vw, 32px);
@@ -133,19 +138,29 @@
         width: 200px;
         padding-top: 100px;
       }
+      .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+      }
     }
     @media (max-width: 480px) {
       .main h1 {
-        font-size: 24px;
+        font-size: 20px;
+      }
+      .main .welcome {
+        font-size: 14px;
+      }
+      .sidebar li {
+        font-size: 14px;
+        padding: 10px 20px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Toggle Sidebar Button -->
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰ Menu</button>
 
-  <!-- Sidebar Navigation -->
   <div class="sidebar closed" id="sidebar">
     <ul>
       <li onclick="closeSidebar()"><i>👤</i><span>My Account</span></li>
@@ -164,13 +179,11 @@
     </ul>
   </div>
 
-  <!-- Main Content Area -->
   <div class="main">
     <h1 id="mainTitle">Welcome to Wonder Kids</h1>
     <div id="userWelcome" class="welcome"></div>
   </div>
 
-  <!-- Language + Auth Logic -->
   <script>
     const translations = {
       en: {

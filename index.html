@@ -256,13 +256,6 @@
       const lang = localStorage.getItem('lang') || 'en';
       setLanguage(lang);
 
-      const remembered = localStorage.getItem('rememberMe');
-      if (remembered) {
-        const user = JSON.parse(remembered);
-        localStorage.setItem('loggedInUser', remembered);
-        window.location.href = 'home.html';
-      }
-    }
   </script>
 </body>
 </html>

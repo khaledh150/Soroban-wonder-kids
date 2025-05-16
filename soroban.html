@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -34,12 +35,12 @@
 
             #fullscreenBtn,
             #exitFullscreenBtn {
-                width: 40px;
-                height: 40px;
+                width: 30px;
+                height: 30px;
                 cursor: pointer;
                 position: absolute;
                 bottom: 50px; /* distance from bottom of sidebar */
-                left: 50px; /* distance from left edge of sidebar */
+                left: 5px; /* distance from left edge of sidebar */
                 z-index: 10002; /* above sidebar */
                 display: none; /* controlled by JS */
             }
@@ -460,7 +461,27 @@
                         setBead(t.bead, t.mode === "activate");
                     }
 
-                                    function onUpCancel(e) {
+                    /* side-sweep: if we crossed into a new rod, copy the action ----- */
+                    if (t.mode && performance.now() - t.lastCopy > SWIPE_DELAY) {
+                        const elem = document.elementFromPoint(e.clientX, e.clientY);
+                        const rod = elem?.closest?.(".rod");
+
+                        if (rod && rod !== t.lastRod) {
+                            const otherBead = rod.querySelector(`.bead.${t.region}`);
+                            if (otherBead) {
+                                setBead(otherBead, t.mode === "activate");
+                                t.lastRod = rod;
+                                t.lastCopy = performance.now();
+                            }
+                            // bottom earth
+                            if (target) setBead(target, t.mode === "activate");
+                            t.lastRod = rod;
+                            t.lastCopy = performance.now();
+                        }
+                    }
+                }
+
+                function onUpCancel(e) {
                     const t = touches.get(e.pointerId);
                     if (!t) return;
                     t.bead.classList.remove("pressed");

@@ -12,12 +12,12 @@
       color: white;
       display: flex;
       flex-wrap: wrap;
-      height: 100vh;
+      min-height: 100vh;
       overflow-x: hidden;
       overflow-y: auto;
     }
     .sidebar-toggle {
-      position: absolute;
+      position: fixed;
       top: 20px;
       left: 20px;
       background: rgba(255, 255, 255, 0.8);
@@ -41,6 +41,9 @@
       transition: transform 0.3s ease;
       z-index: 1000;
       min-height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
     }
     .sidebar.closed {
       transform: translateX(-100%);
@@ -52,7 +55,7 @@
     }
     .sidebar li {
       padding: 12px 30px;
-      font-size: 16px;
+      font-size: clamp(14px, 2vw, 16px);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -66,9 +69,6 @@
       background: #d0d8ee;
       color: #5b3cc4;
       font-weight: 600;
-    }
-    .sidebar li i {
-      margin-right: 10px;
     }
     .language-btn {
       background: transparent;
@@ -93,7 +93,7 @@
       transition: all 0.3s ease;
     }
     .submenu li {
-      font-size: 14px;
+      font-size: clamp(12px, 2vw, 14px);
       padding: 6px 20px;
       margin: 4px 0;
       background-color: transparent;
@@ -113,12 +113,13 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 40px;
+      padding: 60px 20px 20px 270px;
       min-width: 0;
+      width: 100%;
     }
     h1 {
       margin-bottom: 30px;
-      font-size: 32px;
+      font-size: clamp(20px, 5vw, 32px);
     }
     .btn {
       background: #444;
@@ -126,7 +127,7 @@
       border: none;
       padding: 12px 24px;
       margin: 10px;
-      font-size: 18px;
+      font-size: clamp(14px, 3vw, 18px);
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.3s;
@@ -139,14 +140,19 @@
         width: 200px;
         padding-top: 100px;
       }
+      .main {
+        padding: 60px 20px 20px 220px;
+      }
     }
     @media (max-width: 480px) {
-      .btn {
-        font-size: 16px;
-        padding: 8px 16px;
+      .main {
+        padding: 100px 20px 20px 20px;
       }
-      h1 {
-        font-size: 24px;
+      .sidebar {
+        position: fixed;
+        z-index: 1000;
+        height: 100vh;
+        width: 200px;
       }
     }
   </style>

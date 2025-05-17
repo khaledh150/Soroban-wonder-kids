@@ -165,7 +165,7 @@
       background: rgba(255, 255, 255, 0.6);
     }
 
-    #scoreLine {
+    #scoreLine, #timeTaken {
       margin-top: 20px;
       font-size: clamp(16px, 3vw, 20px);
       font-weight: bold;
@@ -182,7 +182,7 @@
       color: white;
       border: none;
       padding: 12px 24px;
-      margin-top: 30px;
+      margin-top: 20px;
       font-size: clamp(14px, 3vw, 16px);
       font-weight: 600;
       border-radius: 8px;
@@ -244,21 +244,28 @@
   <div class="card">
     <h2 id="resultsTitle">Results</h2>
     <div id="resultList"></div>
-    <div id="scoreLine" style="margin-top: 10px;"></div>
+    <div id="scoreLine"></div>
+    <div id="timeTaken"></div>
+    <button class="btn" onclick="retakeQuiz()">↻ Retake Quiz</button>
     <button class="btn" onclick="location.href='index.html'">Back to Main Menu</button>
   </div>
 
   <script>
     const resultList = document.getElementById('resultList');
     const scoreLine = document.getElementById('scoreLine');
+    const timeTaken = document.getElementById('timeTaken');
     const resultsTitle = document.getElementById('resultsTitle');
 
     function loadResults() {
       const stored = localStorage.getItem('sorobanResults');
+      const startTime = localStorage.getItem('sorobanStartTime');
+      const endTime = localStorage.getItem('sorobanEndTime');
+
       if (!stored) {
         resultList.innerHTML = '<p>No results found.</p>';
         return;
       }
+
       const answers = JSON.parse(stored);
       let score = 0;
       answers.forEach((item, i) => {
@@ -270,12 +277,14 @@
         resultList.appendChild(div);
       });
       scoreLine.textContent = `You scored ${score} / ${answers.length}`;
-    }
 
-    const translations = {
-      en: { title: "Results" },
-      th: { title: "ผลลัพธ์" }
-    };
+      if (startTime && endTime) {
+        const duration = Math.floor((parseInt(endTime) - parseInt(startTime)) / 1000);
+        const mins = Math.floor(duration / 60);
+        const secs = duration % 60;
+        timeTaken.textContent = `Time taken: ${mins}m ${secs}s`;
+      }
+    }
 
     function toggleLanguage() {
       const lang = localStorage.getItem("lang") === "th" ? "en" : "th";
@@ -284,8 +293,8 @@
 
     function setLanguage(lang) {
       localStorage.setItem("lang", lang);
-      const t = translations[lang];
-      resultsTitle.textContent = t.title;
+      const t = { en: { title: "Results" }, th: { title: "ผลลัพธ์" } };
+      resultsTitle.textContent = t[lang].title;
     }
 
     function toggleSidebar() {
@@ -312,11 +321,20 @@
       window.location.href = "index.html";
     }
 
+    function retakeQuiz() {
+      localStorage.removeItem("sorobanResults");
+      localStorage.removeItem("sorobanStartTime");
+      localStorage.removeItem("sorobanEndTime");
+      window.location.href = "quiz.html";
+    }
+
     window.onload = () => {
       const lang = localStorage.getItem("lang") || "en";
       setLanguage(lang);
+
       const user = JSON.parse(localStorage.getItem("loggedInUser"));
       if (!user) window.location.href = "index.html";
+
       loadResults();
     };
   </script>

@@ -1,5 +1,4 @@
-
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -11,11 +10,8 @@
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(to right, #b993d6, #8ca6db);
       color: white;
-      display: flex;
-      flex-wrap: wrap;
       height: 100vh;
       overflow-x: hidden;
-      overflow-y: auto;
     }
     .sidebar-toggle {
       position: fixed;
@@ -36,18 +32,39 @@
       color: #333;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
-      padding: 80px 0 20px 0;
       box-shadow: 2px 0 10px rgba(0,0,0,0.2);
       transition: transform 0.3s ease;
       z-index: 1000;
-      min-height: 100vh;
+      height: 100vh;
       position: fixed;
       left: 0;
       top: 0;
+      min-width: 200px;
+      min-height: 100vh;
     }
     .sidebar.closed {
       transform: translateX(-100%);
+    }
+    .sidebar-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+      padding-top: 70px; /* space for the menu down */
+    }
+    .menu-list {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 20px;
+      min-height: 0;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .menu-list > li {
+      position: relative;
+      padding: 0;
     }
     .sidebar ul {
       list-style: none;
@@ -55,46 +72,49 @@
       margin: 0;
     }
     .sidebar li {
-      padding: 12px 30px;
       font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: background 0.3s ease;
     }
-    .sidebar li span {
-      flex-grow: 1;
+    .sidebar li i {
+      margin-right: 10px;
     }
     .sidebar li:hover, .sidebar li.active {
       background: #d0d8ee;
       color: #5b3cc4;
       font-weight: 600;
     }
-    .sidebar li i {
-      margin-right: 10px;
-    }
-    .language-btn {
-      background: transparent;
-      color: #333;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      font-size: 14px;
+    .level-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 30px;
+      font-size: 16px;
       cursor: pointer;
+      transition: background 0.3s;
       width: 100%;
-      margin: 10px 0 0 0;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+      box-sizing: border-box;
     }
-    .language-btn:hover {
-      background: rgba(255, 255, 255, 0.4);
+    .level-header:hover {
+      background: #d0d8ee;
+      color: #5b3cc4;
+      font-weight: 600;
+    }
+    .level-header i {
+      margin-right: 10px;
     }
     .submenu {
       display: none;
       flex-direction: column;
       align-items: center;
-      margin-top: 5px;
+      margin-top: 0;
       transition: all 0.3s ease;
+      max-height: 250px;
+      overflow-y: auto;
+      width: 100%;
+      background: transparent;
+      box-shadow: none;
+      position: static;
+    }
+    .submenu.open {
+      display: flex;
     }
     .submenu li {
       font-size: 14px;
@@ -106,21 +126,77 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
       width: 70%;
       text-align: center;
+      cursor: pointer;
     }
-    .submenu.open {
+    .submenu li:hover {
+      background: #d0d8ee;
+      color: #5b3cc4;
+    }
+    .submenu::-webkit-scrollbar {
+      width: 6px;
+    }
+    .submenu::-webkit-scrollbar-thumb {
+      background: #d0d8ee;
+      border-radius: 3px;
+    }
+    .sidebar-bottom {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: rgba(255,255,255,0.0);
+      padding-bottom: 20px;
+    }
+    .sidebar-bottom-list {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 0 0;
+      width: 100%;
+    }
+    .sidebar-bottom li {
+      padding: 12px 30px;
+      font-size: 16px;
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .sidebar-bottom li i {
+      margin-right: 10px;
+    }
+    .logout-icon {
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
+    }
+    .language-btn {
+      background: transparent;
+      color: #333;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+      margin: 0;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    }
+    .language-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
     }
     .main {
-      flex: 1;
+      min-height: 100vh;
+      width: calc(100% - 250px);
+      margin-left: 250px;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 40px;
-      margin-left: 250px;
+      padding: 0 40px;
       transition: margin-left 0.3s ease;
-      width: calc(100% - 250px);
     }
     .sidebar.closed + .main {
       margin-left: 0;
@@ -137,12 +213,15 @@
     @media (max-width: 768px) {
       .sidebar {
         width: 200px;
-        padding-top: 100px;
       }
       .main {
         margin-left: 0;
         width: 100%;
-        padding: 20px;
+        padding: 0 10px;
+        min-height: 100vh;
+      }
+      .sidebar-bottom li {
+        padding: 12px 15px;
       }
     }
     @media (max-width: 480px) {
@@ -156,6 +235,13 @@
         font-size: 14px;
         padding: 10px 20px;
       }
+      .submenu {
+        max-height: 150px;
+      }
+      .sidebar-bottom li {
+        font-size: 14px;
+        padding: 10px 15px;
+      }
     }
   </style>
 </head>
@@ -163,32 +249,56 @@
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰ Menu</button>
 
   <div class="sidebar closed" id="sidebar">
-    <ul>
-      <li onclick="closeSidebar()"><i>👤</i><span>My Account</span></li>
-      <li onclick="toggleCourses()"><i>📘</i><span>Level 1</span><span id="arrow">▾</span></li>
-      <ul class="submenu" id="coursesSubmenu">
-        <li onclick="location.href='sorobancoursepage.html'">Soroban</li>
-       <li onclick="closeSidebar()">Chapter 2</li>
-       <li onclick="closeSidebar()">Chapter 3</li>
-       <li onclick="closeSidebar()">Chapter 4</li>
-       <li onclick="closeSidebar()">Chapter 5</li>
-       <li onclick="closeSidebar()">Chapter 6</li>
-       <li onclick="closeSidebar()">Chapter 7</li>
-       <li onclick="closeSidebar()">Chapter 8</li>
-       <li onclick="closeSidebar()">Chapter 9</li>
-       <li onclick="closeSidebar()">Chapter 10</li>
-       <li onclick="closeSidebar()">Chapter 11</li>
-       <li onclick="closeSidebar()">Chapter 12</li>
-       <li onclick="closeSidebar()">Chapter 13</li>
-       <li onclick="closeSidebar()">Chapter 14</li>
-       <li onclick="closeSidebar()">Chapter 15</li>
-       <li onclick="closeSidebar()">Chapter 16</li>
+    <div class="sidebar-content">
+      <ul class="menu-list">
+        <li onclick="closeSidebar()">
+          <i>👤</i>
+          <span>My Account</span>
+        </li>
+        <li>
+          <div class="level-header" onclick="toggleCourses()">
+            <i>📘</i>
+            <span>Level 1</span>
+            <span id="arrow">▾</span>
+          </div>
+          <ul class="submenu" id="coursesSubmenu">
+            <li onclick="location.href='sorobancoursepage.html'">Soroban</li>
+            <li onclick="closeSidebar()">Chapter 2</li>
+            <li onclick="closeSidebar()">Chapter 3</li>
+            <li onclick="closeSidebar()">Chapter 4</li>
+            <li onclick="closeSidebar()">Chapter 5</li>
+            <li onclick="closeSidebar()">Chapter 6</li>
+            <li onclick="closeSidebar()">Chapter 7</li>
+            <li onclick="closeSidebar()">Chapter 8</li>
+            <li onclick="closeSidebar()">Chapter 9</li>
+            <li onclick="closeSidebar()">Chapter 10</li>
+            <li onclick="closeSidebar()">Chapter 11</li>
+            <li onclick="closeSidebar()">Chapter 12</li>
+            <li onclick="closeSidebar()">Chapter 13</li>
+            <li onclick="closeSidebar()">Chapter 14</li>
+            <li onclick="closeSidebar()">Chapter 15</li>
+            <li onclick="closeSidebar()">Chapter 16</li>
+          </ul>
+        </li>
       </ul>
-      <li onclick="closeSidebar()"><i>🧾</i><span>Progress</span></li>
-      <li onclick="closeSidebar()"><i>⚙️</i><span>Settings</span></li>
-      <li onclick="logout()"><i>🔓</i><span>Log Out</span></li>
-      <li><button class="language-btn" onclick="toggleLanguage()">🌐 EN / TH</button></li>
-    </ul>
+    </div>
+    <div class="sidebar-bottom">
+      <ul class="sidebar-bottom-list">
+        <li onclick="logout()">
+          <i class="logout-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#5b3cc4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="11" width="16" height="8" rx="2" fill="#5b3cc4" stroke="none"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#5b3cc4" fill="none"/>
+              <circle cx="12" cy="15" r="1.5" fill="#fff"/>
+            </svg>
+          </i>
+          <span>Log Out</span>
+        </li>
+        <li>
+          <button class="language-btn" onclick="toggleLanguage()">🌐 EN / TH</button>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <div class="main">

@@ -33,27 +33,6 @@
       margin-bottom: 20px;
       color: #333;
     }
-    .role-tabs {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      gap: 5px;
-    }
-    .role-tabs button {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-radius: 20px;
-      background: #eee;
-      color: #333;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: clamp(12px, 3vw, 16px);
-    }
-    .role-tabs button.active {
-      background: #6a11cb;
-      color: white;
-    }
     input {
       padding: 12px;
       margin-bottom: 15px;
@@ -66,13 +45,24 @@
     .remember-forgot {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: 14px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
-    .remember-forgot label {
+    .remember-label {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 7px;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+    .remember-label input[type="checkbox"] {
+      accent-color: #6a11cb; /* Modern browsers */
+      width: 17px;
+      height: 17px;
+      vertical-align: middle;
+      margin-top: 20px; /* This moves the checkbox down slightly */
     }
     .password-wrapper {
       position: relative;
@@ -146,16 +136,21 @@
     .language-switch-inner button:hover {
       background: #ddd;
     }
+    .forgot-link {
+      color: #6a11cb;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 14px;
+      transition: text-decoration 0.2s;
+    }
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2 id="formTitle">Sign In</h2>
-    <div class="role-tabs">
-      <button id="studentBtn" class="active" onclick="setRole('student')">Student</button>
-      <button id="tutorBtn" onclick="setRole('tutor')">Tutor</button>
-      <button id="adminBtn" onclick="setRole('admin')">Admin</button>
-    </div>
     <input type="text" id="username" placeholder="Username or email" />
     <div class="password-wrapper">
       <input type="password" id="password" placeholder="Password" />
@@ -167,8 +162,11 @@
       </button>
     </div>
     <div class="remember-forgot">
-      <label><input type="checkbox" id="remember"> Remember me</label>
-      <a style="color:#6a11cb; cursor:pointer;">Forgot password?</a>
+      <label class="remember-label">
+        <input type="checkbox" id="remember">
+        <span>Remember me</span>
+      </label>
+      <a class="forgot-link">Forgot password?</a>
     </div>
     <button onclick="submitForm()" id="submitBtn">Sign In</button>
     <div class="language-switch-inner">
@@ -180,19 +178,12 @@
   </div>
   <script>
     let mode = 'signin';
-    let role = 'student';
     let passwordShown = false;
 
     const translations = {
       en: { signin: "Sign In", signup: "Sign Up", create: "Create an Account", have: "Already have an account?" },
       th: { signin: "เข้าสู่ระบบ", signup: "สมัครสมาชิก", create: "สร้างบัญชี", have: "มีบัญชีอยู่แล้ว?" }
     };
-
-    function setRole(selected) {
-      role = selected;
-      ['student', 'tutor', 'admin'].forEach(r => document.getElementById(r + 'Btn').classList.remove('active'));
-      document.getElementById(selected + 'Btn').classList.add('active');
-    }
 
     function togglePassword() {
       const pwd = document.getElementById('password');
@@ -232,7 +223,7 @@
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
       const remember = document.getElementById('remember').checked;
-      const key = `${role}_${username}`;
+      const key = `user_${username}`;
 
       if (!username || !password) return alert('Please fill in all fields.');
 
@@ -240,7 +231,7 @@
         const stored = localStorage.getItem(key);
         if (!stored) return alert('Account not found. Please sign up first.');
         if (stored !== password) return alert('Incorrect password.');
-        const user = { role, username };
+        const user = { username };
         localStorage.setItem('loggedInUser', JSON.stringify(user));
         if (remember) localStorage.setItem('rememberMe', JSON.stringify(user));
         window.location.href = 'home.html';
@@ -253,10 +244,9 @@
     }
 
     window.onload = () => {
-  const lang = localStorage.getItem('lang') || 'en';
-  setLanguage(lang);
-};
-
+      const lang = localStorage.getItem('lang') || 'en';
+      setLanguage(lang);
+    };
   </script>
 </body>
 </html>

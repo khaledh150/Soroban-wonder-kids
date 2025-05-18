@@ -1,375 +1,253 @@
+
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <title>Wonder Kids - Home</title>
-        <style>
-            html,
-            body {
-                height: 100vh;
-                overflow: hidden;
-            }
-            body {
-                margin: 0;
-                font-family: "Segoe UI", sans-serif;
-                background: linear-gradient(to right, #b993d6, #8ca6db);
-                color: white;
-                height: 100vh;
-                overflow-x: hidden;
-            }
-            .sidebar-toggle {
-                position: fixed;
-                top: 20px;
-                left: 20px;
-                background: rgba(255, 255, 255, 0.8);
-                border: none;
-                padding: 10px 15px;
-                border-radius: 5px;
-                color: #333;
-                font-weight: bold;
-                cursor: pointer;
-                z-index: 1001;
-            }
-            .sidebar {
-                width: 250px;
-                background: rgba(255, 255, 255, 0.7);
-                color: #333;
-                display: flex;
-                flex-direction: column;
-                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-                transition: transform 0.3s ease;
-                z-index: 1000;
-                height: 100vh;
-                position: fixed;
-                left: 0;
-                top: 0;
-                min-width: 200px;
-                min-height: 100vh;
-            }
-            .sidebar.closed {
-                transform: translateX(-100%);
-            }
-            .sidebar-content {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                min-height: 0;
-                overflow: hidden;
-                padding-top: 70px; /* space for the menu down */
-            }
-            .menu-list {
-                flex: 1;
-                overflow-y: auto;
-                padding-bottom: 20px;
-                min-height: 0;
-                list-style: none;
-                margin: 0;
-                padding: 0;
-            }
-            .menu-list > li {
-                position: relative;
-                padding: 0;
-            }
-            .sidebar ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-            .sidebar li {
-                font-size: 16px;
-            }
-            .sidebar li i {
-                margin-right: 10px;
-            }
-            .sidebar li:hover,
-            .sidebar li.active {
-                background: #d0d8ee;
-                color: #5b3cc4;
-                font-weight: 600;
-            }
-            .level-header {
-                display: flex;
-                align-items: center;
-                padding: 12px 30px;
-                font-size: 16px;
-                cursor: pointer;
-                transition: background 0.3s;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            .level-header:hover {
-                background: #d0d8ee;
-                color: #5b3cc4;
-                font-weight: 600;
-            }
-            .level-header i {
-                margin-right: 10px;
-            }
-            .submenu {
-                display: none;
-                flex-direction: column;
-                align-items: center;
-                margin-top: 0;
-                transition: all 0.3s ease;
-                max-height: 250px;
-                overflow-y: auto;
-                width: 100%;
-                background: transparent;
-                box-shadow: none;
-                position: static;
-            }
-            .submenu.open {
-                display: flex;
-            }
-            .submenu li {
-                font-size: 14px;
-                padding: 6px 20px;
-                margin: 4px 0;
-                background-color: transparent;
-                border-radius: 4px;
-                color: #333;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-                width: 70%;
-                text-align: center;
-                cursor: pointer;
-            }
-            .submenu li:hover {
-                background: #d0d8ee;
-                color: #5b3cc4;
-            }
-            .submenu::-webkit-scrollbar {
-                width: 6px;
-            }
-            .submenu::-webkit-scrollbar-thumb {
-                background: #d0d8ee;
-                border-radius: 3px;
-            }
-            .sidebar-bottom {
-                width: 100%;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                background: rgba(255, 255, 255, 0);
-                padding-bottom: 20px;
-            }
-            .sidebar-bottom-list {
-                list-style: none;
-                margin: 0;
-                padding: 0 0 0 0;
-                width: 100%;
-            }
-            .sidebar-bottom li {
-                padding: 12px 30px;
-                font-size: 16px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                cursor: pointer;
-                transition: background 0.3s ease;
-            }
-            .sidebar-bottom li i {
-                margin-right: 10px;
-            }
-            .logout-icon {
-                display: flex;
-                align-items: center;
-                margin-right: 10px;
-            }
-            .language-btn {
-                background: transparent;
-                color: #333;
-                border: none;
-                padding: 8px 15px;
-                border-radius: 5px;
-                font-size: 14px;
-                cursor: pointer;
-                width: 100%;
-                margin: 0;
-                box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-            }
-            .language-btn:hover {
-                background: rgba(255, 255, 255, 0.4);
-            }
-            .main {
-                min-height: 100vh;
-                width: calc(100% - 250px);
-                margin-left: 250px;
-                box-sizing: border-box;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                padding: 0 40px;
-                transition: margin-left 0.3s ease;
-            }
-            .sidebar.closed + .main {
-                margin-left: 0;
-                width: 100%;
-            }
-            .main h1 {
-                font-size: clamp(24px, 4vw, 32px);
-                margin-bottom: 10px;
-            }
-            .main .welcome {
-                font-size: clamp(16px, 3vw, 18px);
-                margin-bottom: 20px;
-            }
-            @media (max-width: 768px) {
-                .sidebar {
-                    width: 200px;
-                }
-                .main {
-                    margin-left: 0;
-                    width: 100%;
-                    padding: 0 10px;
-                    min-height: 100vh;
-                }
-                .sidebar-bottom li {
-                    padding: 12px 15px;
-                }
-            }
-            @media (max-width: 480px) {
-                .main h1 {
-                    font-size: 20px;
-                }
-                .main .welcome {
-                    font-size: 14px;
-                }
-                .sidebar li {
-                    font-size: 14px;
-                    padding: 10px 20px;
-                }
-                .submenu {
-                    max-height: 150px;
-                }
-                .sidebar-bottom li {
-                    font-size: 14px;
-                    padding: 10px 15px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <button class="sidebar-toggle" onclick="toggleSidebar()">☰ Menu</button>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Login - Wonder Kids</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #b993d6, #8ca6db);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      padding: 30px 20px;
+      position: relative;
+    }
+    h2 {
+      font-size: clamp(20px, 5vw, 28px);
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input {
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+    .remember-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+    .remember-label input[type="checkbox"] {
+      accent-color: #6a11cb; /* Modern browsers */
+      width: 17px;
+      height: 17px;
+      vertical-align: middle;
+      margin-top: 20px; /* This moves the checkbox down slightly */
+    }
+    .password-wrapper {
+      position: relative;
+    }
+    .password-wrapper input {
+      width: 100%;
+      padding-right: 40px;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .toggle-password svg {
+      width: 22px;
+      height: 22px;
+      color: #444;
+      opacity: 0.75;
+    }
+    .toggle-password:active svg,
+    .toggle-password:focus svg {
+      color: #222;
+      opacity: 1;
+    }
+    button {
+      padding: 12px;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .toggle {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .toggle a {
+      color: #6a11cb;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .language-switch-inner {
+      margin: 12px 0 0 0;
+      display: flex;
+      justify-content: center;
+    }
+    .language-switch-inner button {
+      padding: 6px 12px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      background: #eee;
+      color: #333;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: background 0.2s;
+    }
+    .language-switch-inner button:hover {
+      background: #ddd;
+    }
+    .forgot-link {
+      color: #6a11cb;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 14px;
+      transition: text-decoration 0.2s;
+    }
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="formTitle">Sign In</h2>
+    <input type="text" id="username" placeholder="Username or email" />
+    <div class="password-wrapper">
+      <input type="password" id="password" placeholder="Password" />
+      <button type="button" class="toggle-password" tabindex="-1" onclick="togglePassword()">
+        <svg id="eyeIcon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           d="M1.5 12C3.5 7.5 8 4.5 12 4.5c4 0 8.5 3 10.5 7.5-2 4.5-6.5 7.5-10.5 7.5S3.5 16.5 1.5 12zm10.5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="remember-forgot">
+      <label class="remember-label">
+        <input type="checkbox" id="remember">
+        <span>Remember me</span>
+      </label>
+      <a class="forgot-link">Forgot password?</a>
+    </div>
+    <button onclick="submitForm()" id="submitBtn">Sign In</button>
+    <div class="language-switch-inner">
+      <button onclick="toggleLanguage()" id="langBtn">EN / TH</button>
+    </div>
+    <div class="toggle" id="toggleText">
+      New here? <a onclick="toggleMode()">Create an Account</a>
+    </div>
+  </div>
+  <script>
+    let mode = 'signin';
+    let passwordShown = false;
 
-        <div class="sidebar closed" id="sidebar">
-            <div class="sidebar-content">
-                <ul class="menu-list">
-                    <li onclick="closeSidebar()">
-                        <i>👤</i>
-                        <span>My Account</span>
-                    </li>
-                    <li>
-                        <div class="level-header" onclick="toggleCourses()">
-                            <i>📘</i>
-                            <span>Level 1</span>
-                            <span id="arrow">▾</span>
-                        </div>
-                        <ul class="submenu" id="coursesSubmenu">
-                            <li onclick="location.href='Chapte1.html'">Chapter1</li>
-                            <li onclick="closeSidebar()">Chapter 2</li>
-                            <li onclick="closeSidebar()">Chapter 3</li>
-                            <li onclick="closeSidebar()">Chapter 4</li>
-                            <li onclick="closeSidebar()">Chapter 5</li>
-                            <li onclick="closeSidebar()">Chapter 6</li>
-                            <li onclick="closeSidebar()">Chapter 7</li>
-                            <li onclick="closeSidebar()">Chapter 8</li>
-                            <li onclick="closeSidebar()">Chapter 9</li>
-                            <li onclick="closeSidebar()">Chapter 10</li>
-                            <li onclick="closeSidebar()">Chapter 11</li>
-                            <li onclick="closeSidebar()">Chapter 12</li>
-                            <li onclick="closeSidebar()">Chapter 13</li>
-                            <li onclick="closeSidebar()">Chapter 14</li>
-                            <li onclick="closeSidebar()">Chapter 15</li>
-                            <li onclick="closeSidebar()">Chapter 16</li>
-                            <li onclick="closeSidebar()">Chapter 17</li>
-                            <li onclick="closeSidebar()">Chapter 18</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="sidebar-bottom">
-                <ul class="sidebar-bottom-list">
-                    <li onclick="logout()">
-                        <i class="logout-icon">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#5b3cc4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="4" y="11" width="16" height="8" rx="2" fill="#5b3cc4" stroke="none" />
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#5b3cc4" fill="none" />
-                                <circle cx="12" cy="15" r="1.5" fill="#fff" />
-                            </svg>
-                        </i>
-                        <span>Log Out</span>
-                    </li>
-                    <li>
-                        <button class="language-btn" onclick="toggleLanguage()">🌐 EN / TH</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    const translations = {
+      en: { signin: "Sign In", signup: "Sign Up", create: "Create an Account", have: "Already have an account?" },
+      th: { signin: "เข้าสู่ระบบ", signup: "สมัครสมาชิก", create: "สร้างบัญชี", have: "มีบัญชีอยู่แล้ว?" }
+    };
 
-        <div class="main">
-            <h1 id="mainTitle">Welcome to Wonder Kids</h1>
-            <div id="userWelcome" class="welcome"></div>
-        </div>
+    function togglePassword() {
+      const pwd = document.getElementById('password');
+      const eye = document.getElementById('eyeIcon');
+      if (pwd.type === 'password') {
+        pwd.type = 'text';
+        // Optional: change eye icon to slashed-eye for visible state
+        eye.innerHTML = '<path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1.5 12C3.5 7.5 8 4.5 12 4.5c4 0 8.5 3 10.5 7.5-2 4.5-6.5 7.5-10.5 7.5S3.5 16.5 1.5 12zm4 5.5L20 4M3 20l18-16" />';
+      } else {
+        pwd.type = 'password';
+        eye.innerHTML = '<path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1.5 12C3.5 7.5 8 4.5 12 4.5c4 0 8.5 3 10.5 7.5-2 4.5-6.5 7.5-10.5 7.5S3.5 16.5 1.5 12zm10.5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>';
+      }
+    }
 
-        <script>
-            const translations = {
-                en: {
-                    title: "Welcome to Wonder Kids",
-                },
-                th: {
-                    title: "ยินดีต้อนรับสู่วันเดอร์คิดส์",
-                },
-            };
+    function toggleLanguage() {
+      const lang = localStorage.getItem('lang') === 'th' ? 'en' : 'th';
+      setLanguage(lang);
+    }
 
-            function toggleLanguage() {
-                const lang = localStorage.getItem("lang") === "th" ? "en" : "th";
-                setLanguage(lang);
-            }
+    function setLanguage(lang) {
+      localStorage.setItem('lang', lang);
+      const t = translations[lang];
+      document.getElementById('formTitle').textContent = mode === 'signin' ? t.signin : t.signup;
+      document.getElementById('submitBtn').textContent = mode === 'signin' ? t.signin : t.signup;
+      document.getElementById('toggleText').innerHTML =
+        mode === 'signin' ? New here? <a onclick="toggleMode()">${t.create}</a> : ${t.have} <a onclick="toggleMode()">${t.signin}</a>;
+      document.getElementById('langBtn').textContent = lang === 'en' ? 'EN / TH' : 'TH / EN';
+    }
 
-            function setLanguage(lang) {
-                localStorage.setItem("lang", lang);
-                const t = translations[lang];
-                document.getElementById("mainTitle").textContent = t.title;
-            }
+    function toggleMode() {
+      mode = mode === 'signin' ? 'signup' : 'signin';
+      const lang = localStorage.getItem('lang') || 'en';
+      setLanguage(lang);
+    }
 
-            function logout() {
-                localStorage.removeItem("loggedInUser");
-                window.location.href = "index.html";
-            }
+    function submitForm() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const remember = document.getElementById('remember').checked;
+      const key = user_${username};
 
-            function toggleSidebar() {
-                const sidebar = document.getElementById("sidebar");
-                sidebar.classList.toggle("closed");
-            }
+      if (!username || !password) return alert('Please fill in all fields.');
 
-            function closeSidebar() {
-                const sidebar = document.getElementById("sidebar");
-                if (window.innerWidth < 769) {
-                    sidebar.classList.add("closed");
-                }
-            }
+      if (mode === 'signin') {
+        const stored = localStorage.getItem(key);
+        if (!stored) return alert('Account not found. Please sign up first.');
+        if (stored !== password) return alert('Incorrect password.');
+        const user = { username };
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        if (remember) localStorage.setItem('rememberMe', JSON.stringify(user));
+        window.location.href = 'home.html';
+      } else {
+        if (localStorage.getItem(key)) return alert('Username already exists.');
+        localStorage.setItem(key, password);
+        alert('Account created! You can now sign in.');
+        toggleMode();
+      }
+    }
 
-            function toggleCourses() {
-                const submenu = document.getElementById("coursesSubmenu");
-                const arrow = document.getElementById("arrow");
-                submenu.classList.toggle("open");
-                arrow.textContent = submenu.classList.contains("open") ? "▴" : "▾";
-            }
-
-            window.onload = () => {
-                const lang = localStorage.getItem("lang") || "en";
-                setLanguage(lang);
-
-                const user = JSON.parse(localStorage.getItem("loggedInUser"));
-                if (!user) {
-                    window.location.href = "index.html";
-                } else {
-                    document.getElementById("userWelcome").textContent = `Hello, ${user.username} (${user.role})`;
-                }
-            };
-        </script>
-    </body>
-</html>
+    window.onload = () => {
+      const lang = localStorage.getItem('lang') || 'en';
+      setLanguage(lang);
+    };
+  </script>
+</body>
+</html>  

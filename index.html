@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -210,7 +209,7 @@
       document.getElementById('formTitle').textContent = mode === 'signin' ? t.signin : t.signup;
       document.getElementById('submitBtn').textContent = mode === 'signin' ? t.signin : t.signup;
       document.getElementById('toggleText').innerHTML =
-        mode === 'signin' ? New here? <a onclick="toggleMode()">${t.create}</a> : ${t.have} <a onclick="toggleMode()">${t.signin}</a>;
+        mode === 'signin' ? `New here? <a onclick="toggleMode()">${t.create}</a>` : `${t.have} <a onclick="toggleMode()">${t.signin}</a>`;
       document.getElementById('langBtn').textContent = lang === 'en' ? 'EN / TH' : 'TH / EN';
     }
 
@@ -224,7 +223,7 @@
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
       const remember = document.getElementById('remember').checked;
-      const key = user_${username};
+      const key = `user_${username}`;
 
       if (!username || !password) return alert('Please fill in all fields.');
 
@@ -250,4 +249,4 @@
     };
   </script>
 </body>
-</html>  
+</html>

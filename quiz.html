@@ -60,13 +60,12 @@
       margin-left: 20px;
     }
     #quizTimer {
-  font-size: 15px;
-  font-weight: bold;
-  margin-right: 170px;
-  margin-top: 10px;     /* <-- adjust this for more/less space above */
-  margin-bottom: 0;     /* <-- remove bottom margin if not needed */
-}
-
+      font-size: 15px;
+      font-weight: bold;
+      margin-right: 170px;
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
     .question { font-size: 35px; font-weight: bold; margin-bottom: 20px; text-align: left; }
     .input-label { font-size: 15px; font-weight: bold; margin-bottom: 6px; width: 100%; text-align: left; margin-left: 32px; }
     .input-section {
@@ -179,10 +178,13 @@
   </style>
 </head>
 <body>
-  <div class="rotate-overlay">
-    Please rotate your device<br>
-    <span style="font-size:1.2rem;color:#445;">(This activity works best in landscape mode)</span>
-  </div>
+ <div class="rotate-overlay">
+  <video id="rotateVideo" width="320" height="240" autoplay loop muted playsinline>
+    <source src="video.mp4" type="video/mp4">
+  </video>
+  <span style="font-size:1.2rem;color:#445;"></span>
+</div>
+
   <div class="sidebar">
     <img id="backBtn" src="back.png" alt="Back" title="Go Back" />
     <div class="sidebar-spacer"></div>
@@ -207,7 +209,7 @@
       </div>
     </div>
     <div class="soroban-container">
-      <iframe id="sorobanFrame" src="soroban.html" allow="fullscreen"></iframe>
+      <iframe id="sorobanFrame" src="soroban.html" allowfullscreen allow="fullscreen"></iframe>
     </div>
   </div>
 <script>

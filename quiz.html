@@ -58,11 +58,18 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
       display: flex; flex-direction: column;
       align-items: center; color: white;
-      margin-left: 120px;
+      margin-left: 50px;
     }
-    #quizTimer { font-size: 15px; font-weight: bold; margin-bottom: 10px; margin-right: 180px; }
+    #quizTimer {
+  font-size: 15px;
+  font-weight: bold;
+  margin-right: 170px;
+  margin-top: 10px;     /* <-- adjust this for more/less space above */
+  margin-bottom: 0;     /* <-- remove bottom margin if not needed */
+}
+
     .question { font-size: 35px; font-weight: bold; margin-bottom: 20px; text-align: left; }
-    .input-label { font-size: 15px; margin-bottom: 6px; width: 100%; text-align: left; margin-left: 32px; }
+    .input-label { font-size: 15px; font-weight: bold; margin-bottom: 6px; width: 100%; text-align: left; margin-left: 32px; }
     .input-section {
       display: flex; width: 90%; align-items: center; justify-content: space-between; margin-bottom: 20px;
     }
@@ -165,12 +172,11 @@
       height: 30px;
       cursor: pointer;
       position: absolute;
-      bottom: 150px;
-      right: 5px; /* moved from left */
+      bottom: 100px;
+      right: 5px;
       z-index: 10002;
       display: none;
     }
-
   </style>
 </head>
 <body>
@@ -303,11 +309,17 @@
   pad.forEach(d => {
     const btn = document.createElement('button');
     if (d === 'BACK') {
+      // SVG closely matching your image
       btn.innerHTML = `
         <svg width="32" height="32" viewBox="0 0 32 32">
-          <circle cx="16" cy="16" r="15" stroke="white" stroke-width="2" fill="none"/>
-          <rect x="10" y="10" width="12" height="12" rx="4" fill="#363B40"/>
-          <path d="M13 13 L19 19 M19 13 L13 19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <g>
+            <!-- Backspace outline shape -->
+            <path d="M6 16 L14 8 H26 Q28 8 28 10 V22 Q28 24 26 24 H14 L6 16 Z" 
+                  fill="none" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- X in the center -->
+            <line x1="17" y1="13" x2="23" y2="19" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="23" y1="13" x2="17" y2="19" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
         </svg>
       `;
       btn.title = "Backspace";

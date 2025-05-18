@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+
+
+ <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -113,7 +116,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 60px 20px 20px 270px;
+      padding: 10px 150px 50px 220px; /* Top Right Bottom Left */
       min-width: 0;
       width: 100%;
     }
@@ -172,8 +175,11 @@
         padding-top: 100px;
       }
       .main {
-        padding: 60px 10px 20px 220px;
-      }
+  /* Top    Right   Bottom  Left  */
+  padding: 100px 50px 20px 50px;
+  /*  90px    30px    20px   220px */
+}
+
       .responsive-iframe {
         width: 90vw;
         height: 50vw;
@@ -222,18 +228,21 @@
     </ul>
   </div>
   <div class="main">
-    <h1 id="pageTitle">Soroban Course</h1>
+    <h1 id="pageTitle">Soroban Level 1</h1>
     <div class="video-section">
-      <div class="video-label" id="videoLabel">Learning Video</div>
-      <iframe class="responsive-iframe"
-        src="https://www.youtube.com/embed/ERszReAojK0"
-        title="Soroban Learning Video"
-        frameborder="0"
-        allowfullscreen></iframe>
+      <div class="video-label" id="videoLabel"> Chapter 1 (Lower + Upper)</div>
+
+<iframe class="responsive-iframe"
+  src="https://www.youtube.com/embed/K91CRNQg2dg"
+  title="Soroban Learning Video"
+  frameborder="0"
+  allowfullscreen></iframe>
+
+
+
     </div>
     <div class="btn-group">
       <button class="btn" onclick="location.href='quiz.html'" id="exerciseBtn">EXERCISE</button>
-      <button class="btn" onclick="location.href='quiz.html'" id="tryAgainBtn">TRY AGAIN</button>
     </div>
   </div>
   <script>
@@ -241,67 +250,65 @@
       en: {
         title: "Soroban Course",
         exercise: "EXERCISE",
-        tryAgain: "TRY AGAIN",
         videoLabel: "Learning Video"
       },
       th: {
         title: "คอร์ส Soroban",
         exercise: "แบบฝึกหัด",
-        tryAgain: "ลองใหม่อีกครั้ง",
         videoLabel: "วิดีโอการเรียนรู้"
       }
     };
 
-    function toggleLanguage() {
-      const lang = localStorage.getItem("lang") === "th" ? "en" : "th";
-      setLanguage(lang);
-    }
+```
+function toggleLanguage() {
+  const lang = localStorage.getItem("lang") === "th" ? "en" : "th";
+  setLanguage(lang);
+}
 
-    function setLanguage(lang) {
-      localStorage.setItem("lang", lang);
-      const t = translations[lang];
-      document.getElementById("pageTitle").textContent = t.title;
-      document.getElementById("exerciseBtn").textContent = t.exercise;
-      document.getElementById("tryAgainBtn").textContent = t.tryAgain;
-      document.getElementById("videoLabel").textContent = t.videoLabel;
-    }
+function setLanguage(lang) {
+  localStorage.setItem("lang", lang);
+  const t = translations[lang];
+  document.getElementById("pageTitle").textContent = t.title;
+  document.getElementById("exerciseBtn").textContent = t.exercise;
+  document.getElementById("tryAgainBtn").textContent = t.tryAgain;
+  document.getElementById("videoLabel").textContent = t.videoLabel;
+}
 
-    function logout() {
-      localStorage.removeItem("loggedInUser");
-      window.location.href = "index.html";
-    }
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  window.location.href = "index.html";
+}
 
-    function toggleSidebar() {
-      const sidebar = document.getElementById("sidebar");
-      sidebar.classList.toggle("closed");
-    }
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  sidebar.classList.toggle("closed");
+}
 
-    function closeSidebar() {
-      const sidebar = document.getElementById("sidebar");
-      if (window.innerWidth < 769) {
-        sidebar.classList.add("closed");
-      }
-    }
+function closeSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  if (window.innerWidth < 769) {
+    sidebar.classList.add("closed");
+  }
+}
 
-    function toggleCourses() {
-      const submenu = document.getElementById("coursesSubmenu");
-      const arrow = document.getElementById("arrow");
-      submenu.classList.toggle("open");
-      arrow.textContent = submenu.classList.contains("open") ? "▴" : "▾";
-    }
+function toggleCourses() {
+  const submenu = document.getElementById("coursesSubmenu");
+  const arrow = document.getElementById("arrow");
+  submenu.classList.toggle("open");
+  arrow.textContent = submenu.classList.contains("open") ? "▴" : "▾";
+}
 
-    window.onload = () => {
-  // Force English on every page load
-  setLanguage("en");
+window.onload = () => {
+  const lang = localStorage.getItem("lang") || "en";
+  setLanguage(lang);
 
-  // You can allow user to switch language later, but always default to English
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
   if (!user) {
-    window.location.href = "index.html";
+    window.location.href = "home.html";
   }
-};
+}
+```
 
   </script>
 </body>
-</html>  
-
+</html>   

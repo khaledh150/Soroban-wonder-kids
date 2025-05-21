@@ -1,311 +1,254 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Chapter 1</title>
+  <title>Chapter</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #b993d6, #8ca6db);
-      color: white;
-      display: flex;
-      flex-wrap: wrap;
-      min-height: 100vh;
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
-    .sidebar-toggle {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background: rgba(255, 255, 255, 0.8);
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      color: #333;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 1001;
-    }
-    .sidebar {
-      width: 250px;
-      background: rgba(255, 255, 255, 0.7);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      padding: 80px 0 20px 0;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-      z-index: 1000;
-      min-height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-    }
-    .sidebar.closed {
-      transform: translateX(-100%);
-    }
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .sidebar li {
-      padding: 12px 30px;
-      font-size: clamp(14px, 2vw, 16px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    .sidebar li span {
-      flex-grow: 1;
-    }
-    .sidebar li:hover, .sidebar li.active {
-      background: #d0d8ee;
-      color: #5b3cc4;
-      font-weight: 600;
-    }
-    .language-btn {
-      background: transparent;
-      color: #333;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      font-size: 14px;
-      cursor: pointer;
-      width: 100%;
-      margin: 10px 0 0 0;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    }
-    .language-btn:hover {
-      background: rgba(255, 255, 255, 0.4);
-    }
-    .submenu {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 5px;
-      transition: all 0.3s ease;
-    }
-    .submenu li {
-      font-size: clamp(12px, 2vw, 14px);
-      padding: 6px 20px;
-      margin: 4px 0;
-      background-color: transparent;
-      border-radius: 4px;
-      color: #333;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-      width: 70%;
-      text-align: center;
-    }
-    .submenu.open {
-      display: flex;
-    }
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 10px 150px 50px 220px; /* Top Right Bottom Left */
-      min-width: 0;
-      width: 100%;
-    }
-    h1 {
-      margin-bottom: 30px;
-      font-size: clamp(20px, 5vw, 32px);
-    }
-    .video-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 30px;
-      width: 100%;
-    }
-    .video-label {
-      margin-bottom: 10px;
-      font-size: clamp(16px, 3vw, 22px);
-      color: white;
-      font-weight: 600;
-    }
-    .responsive-iframe {
-      width: 560px;
-      height: 315px;
-      max-width: 95vw;
-      max-height: 55vw;
-      border: 5px solid #b993d6;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(50, 50, 120, 0.2);
-      background: #222;
-      margin-bottom: 24px;
-    }
-    .btn-group {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .btn {
-      background: #444;
-      color: white;
-      border: none;
-      padding: 12px 28px;
-      margin: 0;
-      font-size: clamp(14px, 3vw, 18px);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-      font-weight: 600;
-    }
-    .btn:hover {
-      background: #5b3cc4;
-    }
-    @media (max-width: 768px) {
-      .sidebar {
-        width: 200px;
-        padding-top: 100px;
-      }
-      .main {
-  /* Top    Right   Bottom  Left  */
-  padding: 100px 50px 20px 50px;
-  /*  90px    30px    20px   220px */
-}
-
-      .responsive-iframe {
-        width: 90vw;
-        height: 50vw;
-        min-height: 180px;
-      }
-    }
-    @media (max-width: 480px) {
-      .main {
-        padding: 100px 2vw 10px 2vw;
-      }
-      .sidebar {
-        position: fixed;
-        z-index: 1000;
-        height: 100vh;
-        width: 180px;
-      }
-      .responsive-iframe {
-        width: 98vw;
-        height: 55vw;
-        min-height: 120px;
-      }
-      .btn {
-        width: 100%;
-        margin-bottom: 10px;
-      }
-    }
+    /* —— Reset & Base —— */
+    html, body { height: 100vh; margin: 0; font-family: 'Segoe UI', sans-serif; background: linear-gradient(to right, #b993d6, #8ca6db); overflow: hidden; }
+    ul { list-style: none; margin:0; padding:0; }
+    /* —— Sidebar Toggle —— */
+    .sidebar-toggle { position: fixed; top:20px; left:20px; background:#FFF; border:none; padding:10px 15px; border-radius:5px; box-shadow:0 2px 6px rgba(0,0,0,0.2); color:#333; font-weight:bold; cursor:pointer; z-index:1001; }
+    /* —— Sidebar —— */
+    .sidebar { position:fixed; top:0; left:0; width:250px; height:100vh; background:#ECE4F7; color:#5b3cc4; display:flex; flex-direction:column; box-shadow:2px 0 10px rgba(0,0,0,0.2); transition:transform 0.3s ease; z-index:1000; }
+    .sidebar.closed { transform: translateX(-100%); }
+    .sidebar-content { flex:1; overflow-y:auto; padding-top:80px; }
+    /* —— Menu Items —— */
+    .menu-list > li > a, .sidebar-bottom-list > li { display:flex; align-items:center; padding:10px 20px; cursor:pointer; text-decoration:none; color:inherit; }
+    .menu-list > li > a i { margin-right:10px; font-size:1.2em; }
+    .menu-list > li > a:hover, .sidebar-bottom-list > li:hover { background:#E2D4F0; }
+    /* —— Level headers —— */
+    .level-header { display:flex; align-items:center; justify-content:space-between; padding:10px 20px; cursor:pointer; transition:background 0.2s; }
+    .level-header:hover { background:#E2D4F0; }
+    .level-header.sticky { position:sticky; top:0; background:#ECE4F7; z-index:2; }
+    .level-header i { margin-right:10px; font-size:1.2em; }
+    /* —— Submenu Chapters —— */
+    .submenu { display:none; max-height:200px; overflow-y:auto; }
+    .submenu.open { display:block; }
+    .submenu li a { display:block; padding:8px 40px; text-decoration:none; color:inherit; }
+    .submenu li a:hover { background:#E2D4F0; }
+    .submenu li a.active { background:#D1C2E8; font-weight:600; }
+    /* —— Sidebar Bottom —— */
+    .sidebar-bottom { background:transparent; }
+    .sidebar-bottom-list > li { justify-content:space-between; }
+    .language-btn { background:transparent; border:none; cursor:pointer; color:inherit; }
+    /* —— Main Content —— */
+    .main { position:absolute; top:0; right:0; margin-left:250px; width:calc(100% - 250px); height:100vh; box-sizing:border-box; padding:80px 20px 20px; overflow-y:auto; color:#fff; text-align:center; transition:margin-left 0.3s ease; }
+    .sidebar.closed + .main { margin-left:0; width:100%; }
+    .main h1 { font-size:clamp(24px,4vw,32px); margin-bottom:20px; }
+    /* —— Video & Button —— */
+    .video-section { margin-bottom:30px; }
+    .video-label { margin-bottom:10px; font-size:clamp(16px,3vw,22px); font-weight:600; }
+    .responsive-iframe { width:560px; height:315px; max-width:95vw; max-height:55vw; border:5px solid #b993d6; border-radius:16px; box-shadow:0 4px 20px rgba(50,50,120,0.2); background:#222; margin-bottom:24px; }
+    .btn-group { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+    .btn { background:#444; color:white; border:none; padding:12px 28px; border-radius:8px; cursor:pointer; font-size:clamp(14px,3vw,18px); font-weight:600; transition:background 0.3s; }
+    .btn:hover { background:#5b3cc4; }
+    @media(max-width:768px){ .sidebar{width:200px;} .main{margin-left:0;width:100%;padding:100px 10px 20px;} .responsive-iframe{width:90vw;height:50vw;min-height:180px;} }
+    @media(max-width:480px){ .sidebar{width:180px;} .main{padding:120px 2vw 10px;} .btn{width:100%;margin-bottom:10px;} .responsive-iframe{width:98vw;height:55vw;min-height:120px;} }
   </style>
 </head>
 <body>
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰ Menu</button>
   <div class="sidebar closed" id="sidebar">
-    <ul>
-      <li onclick="closeSidebar()"><i>👤</i><span>My Account</span></li>
-      <li onclick="toggleCourses()"><i>📘</i><span>Courses</span><span id="arrow">▾</span></li>
-      <ul class="submenu" id="coursesSubmenu">
-        <li onclick="closeSidebar()">Soroban</li>
-        <li onclick="closeSidebar()">English</li>
-        <li onclick="closeSidebar()">Thai</li>
-        <li onclick="closeSidebar()">Math</li>
-        <li onclick="closeSidebar()">Chinese</li>
+    <div class="sidebar-content">
+      <ul class="menu-list" id="fullMenu"></ul>
+    </div>
+    <div class="sidebar-bottom">
+      <ul class="sidebar-bottom-list">
+        <li onclick="logout()"><i>⬅️</i><span id="logoutText">Log Out</span></li>
+        <li><button class="language-btn" id="langBtn" onclick="toggleLanguage()">🌐 TH</button></li>
       </ul>
-      <li onclick="closeSidebar()"><i>🧾</i><span>Progress</span></li>
-      <li onclick="closeSidebar()"><i>⚙️</i><span>Settings</span></li>
-      <li onclick="logout()"><i>🔓</i><span>Log Out</span></li>
-      <li><button class="language-btn" onclick="toggleLanguage()">🌐 EN / TH</button></li>
-    </ul>
+    </div>
   </div>
+
   <div class="main">
-    <h1 id="pageTitle">Soroban Level 1</h1>
+    <h1 id="mainTitle"></h1>
     <div class="video-section">
-      <div class="video-label" id="videoLabel"> Chapter 1 (Lower + Upper)</div>
-
-<iframe class="responsive-iframe"
-  src="https://www.youtube.com/embed/K91CRNQg2dg"
-  title="Soroban Learning Video"
-  frameborder="0"
-  allowfullscreen></iframe>
-
-
-
+      <div id="videoLabel" class="video-label">Chapter 1</div>
+      <iframe id="chapterVideo" class="responsive-iframe" src="" frameborder="0" allowfullscreen></iframe>
     </div>
     <div class="btn-group">
-      <button class="btn" onclick="location.href='quiz.html'" id="exerciseBtn">EXERCISE</button>
+      <button id="exerciseBtn" class="btn">EXERCISE</button>
     </div>
   </div>
+
   <script>
+    // — URL params —
+    const ps = new URLSearchParams(location.search);
+    const currentLevel   = Math.max(1, Math.min(10, parseInt(ps.get('level'))   || 1));
+    const currentChapter = Math.max(1, Math.min(18, parseInt(ps.get('chapter')) || 1));
+
+    // — Your custom Level-1 titles —
+    const titleMap = {
+      1: [
+        'Lower Upper',
+        'Mix Lower + Upper',
+        'Five buddy + ',
+        'Mix five buddy +',
+        'Five buddy - ',
+        'Mix Five buddy - ',
+        'Mix five buddy + Five buddy -',
+        'Ten buddy + ',
+        'Ten buddy -',
+        'Mix Ten + & Ten -',
+        'Five & Ten buddy +9',
+        'Five & Ten buddy +8',
+        'Five & Ten buddy +7',
+        'Five & Ten buddy +6',
+        'Five & Ten buddy -9',
+        'Five & Ten buddy -8',
+        'Five & Ten buddy -7',
+        'Five & Ten buddy -6'
+      ]
+      // …add arrays for level 2, 3, … if you wish
+    };
+
+    // — Build the sidebar menu —
+    function buildMenu() {
+      const icons = ["📘","📗","📙","📒","📓","📔","📕","📖","📚","📙"];
+      let html = `<li onclick="closeSidebar()"><a><i>👤</i><span id="accountText">My Account</span></a></li>`;
+      for (let lvl = 1; lvl <= 10; lvl++) {
+        html += `
+          <li>
+            <div class="level-header" id="levelHeader${lvl}" onclick="toggleCourses(${lvl})">
+              <i>${icons[lvl-1]}</i>
+              <span class="levelText">Level ${lvl}</span>
+              <span id="arrow${lvl}">▾</span>
+            </div>
+            <ul class="submenu" id="coursesSubmenu${lvl}">`;
+        for (let chap = 1; chap <= 18; chap++) {
+          html += `
+            <li>
+              <a href="chapter.html?level=${lvl}&chapter=${chap}" class="chapterLink">
+                Chapter ${chap}
+              </a>
+            </li>`;
+        }
+        html += `</ul></li>`;
+      }
+      document.getElementById('fullMenu').innerHTML = html;
+    }
+
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('closed'); }
+    function closeSidebar()   { if (window.innerWidth < 769) document.getElementById('sidebar').classList.add('closed'); }
+    function toggleCourses(lvl) {
+      document.querySelectorAll('.level-header.sticky').forEach(e => e.classList.remove('sticky'));
+      const header  = document.getElementById(`levelHeader${lvl}`);
+      const submenu = document.getElementById(`coursesSubmenu${lvl}`);
+      const arrow   = document.getElementById(`arrow${lvl}`);
+      const opening = !submenu.classList.contains('open');
+      document.querySelectorAll('.submenu.open').forEach(s => s.classList.remove('open'));
+      document.querySelectorAll('[id^=arrow]').forEach(a => a.textContent = '▾');
+      if (opening) {
+        submenu.classList.add('open');
+        arrow.textContent = '▴';
+        header.classList.add('sticky');
+      }
+    }
+
+    function logout() { localStorage.removeItem('loggedInUser'); location.href = 'login.html'; }
+
+    // — Translations & language toggle (unchanged) —
     const translations = {
       en: {
-        title: "Soroban Course",
-        exercise: "EXERCISE",
-        videoLabel: "Learning Video"
+        accountText: l => 'My Account',
+        levelText:   l => `Level ${l}`,
+        chapterText: c => `Chapter ${c}`,
+        logoutText:  'Log Out',
+        title:       l => `Level ${l}`,
+        chapterLabel:c => `Chapter ${c}`,
+        exercise:    'EXERCISE',
+        langBtnLabel:'🌐 TH'
       },
       th: {
-        title: "คอร์ส Soroban",
-        exercise: "แบบฝึกหัด",
-        videoLabel: "วิดีโอการเรียนรู้"
+        accountText: l => 'บัญชีของฉัน',
+        levelText:   l => `ระดับ ${l}`,
+        chapterText: c => `บทที่ ${c}`,
+        logoutText:  'ออกจากระบบ',
+        title:       l => `ซูโระบัง ระดับ ${l}`,
+        chapterLabel:c => `บทที่ ${c}`,
+        exercise:    'แบบฝึกหัด',
+        langBtnLabel:'🌐 EN'
       }
     };
 
-```
-function toggleLanguage() {
-  const lang = localStorage.getItem("lang") === "th" ? "en" : "th";
-  setLanguage(lang);
-}
+    function toggleLanguage() {
+      setLanguage(localStorage.getItem('lang') === 'th' ? 'en' : 'th');
+    }
 
-function setLanguage(lang) {
-  localStorage.setItem("lang", lang);
-  const t = translations[lang];
-  document.getElementById("pageTitle").textContent = t.title;
-  document.getElementById("exerciseBtn").textContent = t.exercise;
-  document.getElementById("tryAgainBtn").textContent = t.tryAgain;
-  document.getElementById("videoLabel").textContent = t.videoLabel;
-}
+    function setLanguage(lang) {
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = lang;
+      const t = translations[lang];
 
-function logout() {
-  localStorage.removeItem("loggedInUser");
-  window.location.href = "index.html";
-}
+      document.getElementById('accountText').textContent = t.accountText();
+      document.getElementById('logoutText' ).textContent = t.logoutText;
+      document.getElementById('langBtn'    ).textContent = t.langBtnLabel;
 
-function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.classList.toggle("closed");
-}
+      document.querySelectorAll('.levelText').forEach((e,i) =>
+        e.textContent = t.levelText(i + 1)
+      );
+      document.querySelectorAll('.chapterLink').forEach((a,i) =>
+        a.textContent = t.chapterText((i % 18) + 1)
+      );
 
-function closeSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  if (window.innerWidth < 769) {
-    sidebar.classList.add("closed");
-  }
-}
+      document.getElementById('mainTitle').textContent  = `${t.title(currentLevel)} ${t.chapterLabel(currentChapter)}`;
 
-function toggleCourses() {
-  const submenu = document.getElementById("coursesSubmenu");
-  const arrow = document.getElementById("arrow");
-  submenu.classList.toggle("open");
-  arrow.textContent = submenu.classList.contains("open") ? "▴" : "▾";
-}
+      // **we now set the videoLabel below instead of here**
+      document.getElementById('exerciseBtn').textContent = t.exercise;
+    }
 
-window.onload = () => {
-  const lang = localStorage.getItem("lang") || "en";
-  setLanguage(lang);
+    window.addEventListener('DOMContentLoaded', () => {
+      buildMenu();
+      toggleCourses(currentLevel);
 
-  const user = JSON.parse(localStorage.getItem("loggedInUser"));
-  if (!user) {
-    window.location.href = "home.html";
-  }
-}
-```
+      // mark the active chapter link
+      document.querySelectorAll('.chapterLink').forEach(a => a.classList.remove('active'));
+      const sel = `#coursesSubmenu${currentLevel} .chapterLink[href*="chapter=${currentChapter}"]`;
+      const link = document.querySelector(sel);
+      if (link) link.classList.add('active');
 
+      // apply translations
+      setLanguage(localStorage.getItem('lang') || 'en');
+
+      // — NOW override the videoLabel with your custom titleMap —
+      const titles    = titleMap[currentLevel] || [];
+      const display   = titles[currentChapter - 1] || `Chapter ${currentChapter}`;
+      document.getElementById('videoLabel').textContent = display;
+
+      // — then load the YouTube video —
+   const videoMap = {
+  1: [
+    'K91CRNQg2dg',
+    'BbOq___WwNk',
+    'kL27V7PmlxI',
+    'Y7pPDrJ4ZB8',
+    // ... fill out 18
+  ],
+  2: [
+    'QLHYuklz9Ns',
+    'K91CRNQg2dg',
+    'kL27V7PmlxI',
+    // ...
+  ]
+};
+
+const vids  = videoMap[currentLevel] || videoMap[1];
+const vidId = vids[currentChapter - 1];
+document.getElementById('chapterVideo').src = `https://www.youtube.com/embed/${vidId}`;
+
+
+      // hook up the “EXERCISE” button
+      document.getElementById('exerciseBtn').onclick = () =>
+        location.href = `quiz.html?level=${currentLevel}&chapter=${currentChapter}`;
+
+      // redirect to login if needed
+      if (!localStorage.getItem('loggedInUser')) location.href = 'login.html';
+    });
   </script>
 </body>
-</html>   
+</html>

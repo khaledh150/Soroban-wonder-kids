@@ -51,7 +51,8 @@
   </style>
 </head>
 <body>
-  <button class="sidebar-toggle" onclick="toggleSidebar()">☰ Menu</button>
+  <button class="sidebar-toggle" aria-label="Toggle Menu" onclick="toggleSidebar()">☰ Menu</button>
+
   <div class="sidebar closed" id="sidebar">
     <div class="sidebar-content">
       <ul class="menu-list" id="fullMenu"></ul>
@@ -65,7 +66,7 @@
   </div>
 
   <div class="main">
-    <h1 id="mainTitle"></h1>
+<h1 id="mainTitle">Level 1 Chapter 1</h1>
     <div class="video-section">
       <div id="videoLabel" class="video-label">Chapter 1</div>
       <iframe id="chapterVideo" class="responsive-iframe" src="" frameborder="0" allowfullscreen></iframe>
@@ -164,20 +165,24 @@
         langBtnLabel:'🌐 TH'
       },
       th: {
-        accountText: l => 'บัญชีของฉัน',
-        levelText:   l => `ระดับ ${l}`,
-        chapterText: c => `บทที่ ${c}`,
-        logoutText:  'ออกจากระบบ',
-        title:       l => `ซูโระบัง ระดับ ${l}`,
-        chapterLabel:c => `บทที่ ${c}`,
-        exercise:    'แบบฝึกหัด',
-        langBtnLabel:'🌐 EN'
+        th: {
+  accountText: l => 'บัญชีของฉัน',
+  levelText:   l => `ระดับ ${l}`,
+  chapterText: c => `บทที่ ${c}`,
+  logoutText:  'ออกจากระบบ',
+  title:       l => `ระดับ ${l}`,
+  chapterLabel:c => `บทที่ ${c}`,
+  exercise:    'แบบฝึกหัด',
+  langBtnLabel:'🌐 EN'
+}
+
       }
     };
 
-    function toggleLanguage() {
-      setLanguage(localStorage.getItem('lang') === 'th' ? 'en' : 'th');
-    }
+   function toggleLanguage() {
+  setLanguage(localStorage.getItem('lang') === 'th' ? 'en' : 'th');
+}
+
 
     function setLanguage(lang) {
       localStorage.setItem('lang', lang);

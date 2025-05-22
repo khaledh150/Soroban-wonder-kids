@@ -709,7 +709,7 @@ function randomChapter3() {
         showResults();
       }
     }
-    function startQuiz() {
+   function startQuiz() {
   // ---- reset state ----
   if (flashTokenTimer) clearTimeout(flashTokenTimer);
   currentIndex = 0;
@@ -723,16 +723,21 @@ function randomChapter3() {
   $('#timeUpPanel' ).style.display = 'none';
 
   // ---- choose which generator to use ----
-  // Example rule: chapter 2 and above → Chapter-2 generator
   const url     = new URL(location.href);
   const chapter = parseInt(url.searchParams.get('chapter') || '1', 10);
-  const useChap2 = chapter >= 2;          // <-- tweak this rule as you like
 
-  QUESTIONS = useChap2
-      ? randomChapter2(numQuestions)                 // Chap-2 ignores numNumbers
-      : randomChapter1(numQuestions, numNumbers);    // original call
-
-  console.log('Generator used →', useChap2 ? 'randomChapter2' : 'randomChapter1');
+  if (chapter >= 3) {
+    QUESTIONS = randomChapter3(numQuestions);
+    console.log('Generator used → randomChapter3');
+  }
+  else if (chapter >= 2) {
+    QUESTIONS = randomChapter2(numQuestions);    // chapter 2+
+    console.log('Generator used → randomChapter2');
+  }
+  else {
+    QUESTIONS = randomChapter1(numQuestions, numNumbers);  // chapter 1
+    console.log('Generator used → randomChapter1');
+  }
 
   // ---- kick off first question & timer ----
   loadQuestion();

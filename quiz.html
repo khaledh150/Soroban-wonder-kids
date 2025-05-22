@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -253,6 +254,8 @@
     $$('.bead').forEach(b=>b.addEventListener('pointerdown',e=>{const rg=b.classList.contains('heaven')?'heaven':'earth',sy=e.clientY;b.setPointerCapture(e.pointerId);b.onpointermove=ev=>{let dy=ev.clientY-sy;if(Math.abs(dy)>DEAD_ZONE){setBead(b,rg==='heaven'?dy>0:dy<0);b.onpointermove=null;}};b.onpointerup=b.onpointercancel=()=>{b.onpointermove=null;b.releasePointerCapture(e.pointerId);} }));
     if(window.DeviceMotionEvent){let last=0;window.addEventListener('devicemotion',e=>{const{x,y,z}=e.accelerationIncludingGravity,mag=Math.hypot(x,y,z),now=performance.now();if(mag>SHAKE_G&&now-last>750){clearBoard();last=now;}});}
     // Quiz logic
+
+
     function randomChapter1(numQuestions = 10, numNumbers = 4) {
   const out = [];
 
@@ -486,60 +489,176 @@ function randomChapter2(numQuestions = 10) {
     /* S = 6-9 */ return C <= S - 5 || C === 5;
   }
 }
+/**
+ * Chapter 3 question generator
+ * - A, B, C and ops follow your custom rules
+ * - Returns an array of { q: "A op1 B op2 C", a: "D" }
+ */
 
-function randomChapter3() {
-  const arr = [];
 
-  while (arr.length < 10) {
+
+/**
+ * Chapter 3 generator:
+ * - A,B,C and ops follow your rules
+ * - Returns [{ q: "...", a: "..." }, ...]
+ */
+/**
+ * Chapter 3 question generator
+ * - A, B, C and ops follow your custom rules
+ * - Returns an array of { q: "A op1 B op2 C", a: "D" }
+ */
+/**
+ * Chapter 3 question generator
+ * 
+ * Rules:
+ * - A, B, C ∈ 1…9; result D ∈ 0…9
+ * - If op1 = '+':
+ *     A ∈ {1,2,3,4}
+ *     B = 5 − A
+ *     then op2 ∈ {+,-}:
+ *       • if op2 = '+' → C ∈ {1,2,3,4}
+ *       • if op2 = '−' → C = 5
+ * - If op1 = '−':
+ *     A ∈ {6,7,8,9}
+ *     B ∈ {1…(A−5)} ∪ {5}
+ *     then op2 ∈ {+,-}:
+ *       • if op2 = '+' and (A−B)=5 → C ∈ {1,2,3,4}
+ *         if (A−B) ∈ {1,2,3,4} → C = 5 − (A−B)
+ *       • if op2 = '−' and (A−B)=5 → C = 5
+ *         if (A−B) ∈ {1,2,3,4} → C ∈ {1…(A−B)}
+ */
+
+
+
+function randomChapter3(numQuestions = 10) {
+  const out = [];
+
+  while (out.length < numQuestions) {
+    // pick first operator
     const op1 = Math.random() < 0.5 ? '+' : '-';
-    let op2, A, B, C;
+    let A, B, op2, C;
 
-    /* ── first operator “+” ─────────────────────────────── */
     if (op1 === '+') {
-      A = Math.floor(Math.random() * 4) + 1;      // {1-4}
-      B = 5 - A;                                  // forces A+B = 5
+      // op1 = '+': A ∈ 1–4, B = 5−A
+      A   = Math.floor(Math.random() * 4) + 1; // 1,2,3,4
+      B   = 5 - A;
       op2 = Math.random() < 0.5 ? '+' : '-';
-      C = (op2 === '+')
-        ? Math.floor(Math.random() * 4) + 1        // {1-4}
-        : 5;                                       // exactly 5
-    }
-
-    /* ── first operator “-” ─────────────────────────────── */
-    else {
-      A = Math.floor(Math.random() * 4) + 6;       // {6-9}
-
-      /*  B must keep (A-B) in 1…5  →  choose B ∈ [A-5 … A-1]  */
-      const minB = A - 5;                          // 1…4
-      B = Math.floor(Math.random() * (A - minB)) + minB; // [A-5, A-1]
+      // op2 rules
+      if (op2 === '+') {
+        C = Math.floor(Math.random() * 4) + 1; // 1–4
+      } else {
+        C = 5;
+      }
+    } else {
+      // op1 = '-': A ∈ 6–9
+      A   = Math.floor(Math.random() * 4) + 6; // 6,7,8,9
+      // B ∈ 1…(A−5) or B = 5
+      const maxDiff = A - 5;                   // 1–4
+      const pickFromDiff = Math.random() < 0.5;
+      B = pickFromDiff
+          ? Math.floor(Math.random() * maxDiff) + 1   // 1…(A−5)
+          : 5;                                       // or 5
 
       op2 = Math.random() < 0.5 ? '+' : '-';
-      const diff = A - B;                          // always 1…5
+
+      const diff = A - B; // ∈ 1…5
 
       if (op2 === '+') {
-        C = (diff === 5)
-          ? Math.floor(Math.random() * 4) + 1       // {1-4}
-          : 5 - diff;                               // 1…4
-      } else {                                      // op2 is '-'
-        C = (diff === 5)
-          ? 5                                       // exactly 5
-          : Math.floor(Math.random() * diff) + 1;   // 1…diff
+        if (diff === 5) {
+          C = Math.floor(Math.random() * 4) + 1; // 1–4
+        } else {
+          C = 5 - diff;                         // single value
+        }
+      } else {
+        // op2 = '-'
+        if (diff === 5) {
+          C = 5;
+        } else {
+          C = Math.floor(Math.random() * diff) + 1; // 1…diff
+        }
       }
     }
 
-    /* ── evaluate result and store ──────────────────────── */
-    let result = op1 === '+' ? A + B : A - B;
-    result = op2 === '+' ? result + C : result - C;
+    // evaluate
+    const stage1 = op1 === '+' ? A + B : A - B;
+    const result = op2 === '+' ? stage1 + C : stage1 - C;
 
+    // accept only 0–9
     if (result >= 0 && result <= 9) {
-      arr.push({
-        question: `(${A} ${op1} ${B}) ${op2} ${C} =`,
-        answer: result
+      out.push({
+        q: `${A} ${op1} ${B} ${op2} ${C}`,
+        a: result.toString()
       });
     }
   }
 
-  return arr;
+  return out;
 }
+
+
+
+
+function randomChapter4(numQuestions = 10) {
+  const out = [];
+
+  const rand1to9 = () => Math.floor(Math.random() * 9) + 1;
+  const randOp   = () => (Math.random() < 0.5 ? '+' : '-');
+  const evalOp   = (s, op, c) => op === '+' ? s + c : s - c;
+
+  function choose(generator, predicate, maxTries = 60) {
+    while (maxTries--) {
+      const v = generator();
+      if (predicate(v)) return v;
+    }
+    return null;
+  }
+
+  while (out.length < numQuestions) {
+    const A   = rand1to9();
+    const op1 = '-';
+
+    // pick B according to A
+    let B;
+    if (A === 5) {
+      B = choose(rand1to9, b => b >= 1 && b <= 4);
+    } else if ([6,7,8].includes(A)) {
+      B = choose(rand1to9, b => (A - 5) < b && b < 5);
+    } else {
+      continue; // A outside {5,6,7,8} → skip
+    }
+    if (B == null) continue;
+
+    const stage1 = A - B;
+    const op2    = randOp();
+
+    // pick C according to op2 and A,B
+    let C = choose(rand1to9, c => {
+      if (op2 === '+') {
+        if (A === 5) {
+          if (stage1 === 4) {
+            return c >= 1 && c <= 5;
+          } else { // stage1 < 4
+            return c >= 5 && c < (10 - stage1);
+          }
+        } else {
+          // A in {6,7,8}
+          return c >= 1 && c <= 5;
+        }
+      } else { // op2 === '-'
+        return c >= 1 && c <= stage1;
+      }
+    });
+    if (C == null) continue;
+
+    const D = evalOp(stage1, op2, C);
+    if (D < 0 || D > 9) continue;
+
+    out.push({ q: `${A} - ${B} ${op2} ${C}`, a: D.toString() });
+  }
+
+  return out;
+}
+
 
 
 
@@ -726,6 +845,10 @@ function randomChapter3() {
   const url     = new URL(location.href);
   const chapter = parseInt(url.searchParams.get('chapter') || '1', 10);
 
+  if (chapter >= 4) {
+    QUESTIONS = randomChapter3(numQuestions);
+    console.log('Generator used → randomChapter4');
+  }
   if (chapter >= 3) {
     QUESTIONS = randomChapter3(numQuestions);
     console.log('Generator used → randomChapter3');

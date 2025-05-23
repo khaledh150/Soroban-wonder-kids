@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,7 +82,7 @@
     // — URL params —
     const ps = new URLSearchParams(location.search);
     const currentLevel   = Math.max(1, Math.min(10, parseInt(ps.get('level'))   || 1));
-    const currentChapter = Math.max(1, Math.min(18, parseInt(ps.get('chapter')) || 1));
+    const currentChapter = Math.max(1, Math.min(20, parseInt(ps.get('chapter')) || 1));
 
     // — Your custom Level-1 titles —
     const titleMap = {
@@ -116,7 +120,7 @@
               <span id="arrow${lvl}">▾</span>
             </div>
             <ul class="submenu" id="coursesSubmenu${lvl}">`;
-        for (let chap = 1; chap <= 18; chap++) {
+        for (let chap = 1; chap <= 20; chap++) {
           html += `
             <li>
               <a href="chapter.html?level=${lvl}&chapter=${chap}" class="chapterLink">
@@ -193,7 +197,7 @@
         e.textContent = t.levelText(i + 1)
       );
       document.querySelectorAll('.chapterLink').forEach((a,i) =>
-        a.textContent = t.chapterText((i % 18) + 1)
+        a.textContent = t.chapterText((i % 20) + 1)
       );
 
       document.getElementById('mainTitle').textContent  = `${t.title(currentLevel)} ${t.chapterLabel(currentChapter)}`;

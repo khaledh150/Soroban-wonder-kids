@@ -1306,6 +1306,725 @@ function randomChapter9(numQuestions = 10) {
     return questions;
 }
 
+
+
+function randomChapter10(numQuestions = 10) {
+    const questions = [];
+    const seen = new Set();
+    let attempts = 0;
+
+    while (questions.length < numQuestions && attempts < 4000) {
+        attempts++;
+        let A, B, C, op1, op2, expr, result;
+
+        // Pick one of the 7 rules randomly
+        let ruleType = Math.floor(Math.random() * 7);
+
+        if (ruleType === 0) {
+            // Rule 1: op1 = '+', A = 5 or 6, B = 8, op2 = '+', C = 1-9
+            op1 = '+';
+            op2 = '+';
+            A = Math.random() < 0.5 ? 5 : 6;
+            B = 8;
+            C = Math.floor(Math.random() * 9) + 1;
+        } else if (ruleType === 1) {
+            // Rule 2: op1 = '+', A = 1-4, B = 5-A, op2 = '+', C = 8
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 1;
+            B = 5 - A;
+            C = 8;
+        } else if (ruleType === 2) {
+            // Rule 3: op1 = '+', A = 1-4, B = 6-A, op2 = '+', C = 8
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 1;
+            B = 6 - A;
+            C = 8;
+        } else if (ruleType === 3) {
+            // Rule 4: op1 = '+', A = 6-9, B = 15-A, op2 = '+', C = 8
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = 15 - A;
+            C = 8;
+        } else if (ruleType === 4) {
+            // Rule 5: op1 = '+', A = 6-9, B = 16-A, op2 = '+', C = 8
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = 16 - A;
+            C = 8;
+        } else if (ruleType === 5) {
+            // Rule 6: op1 = '-', A = 6-9, B = A-5, op2 = '+', C = 8
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = A - 5;
+            C = 8;
+        } else if (ruleType === 6) {
+            // Rule 7: op1 = '-', A = 6-9, B = A-6, op2 = '+', C = 8
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = A - 6;
+            C = 8;
+        }
+
+        // Make sure all values are in 1-9
+        if ([A, B, C].every(n => n >= 1 && n <= 9)) {
+            expr = `${A} ${op1} ${B} ${op2} ${C}`;
+            result = A;
+            result = op1 === '+' ? result + B : result - B;
+            result = op2 === '+' ? result + C : result - C;
+
+            if (result >= 0 && result <= 100 && !seen.has(expr)) {
+                questions.push({ q: expr, a: result.toString() });
+                seen.add(expr);
+            }
+        }
+    }
+
+        return questions;
+}
+
+
+
+function randomChapter11(numQuestions = 10) {
+    const questions = [];
+    const seen = new Set();
+    let attempts = 0;
+
+    while (questions.length < numQuestions && attempts < 6000) {
+        attempts++;
+        let A, B, C, op1, op2, expr, result;
+
+        // Randomly pick a rule (there are 10)
+        let ruleType = Math.floor(Math.random() * 10);
+
+        if (ruleType === 0) {
+            // 1: op1 = '+', A=5/6/7, B=7, op2='+', C=1-9
+            op1 = '+';
+            op2 = '+';
+            A = [5,6,7][Math.floor(Math.random()*3)];
+            B = 7;
+            C = Math.floor(Math.random() * 9) + 1;
+        } else if (ruleType === 1) {
+            // 2: op1='+', A=1-4, B=5-A, op2='+', C=7
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 1;
+            B = 5 - A;
+            C = 7;
+        } else if (ruleType === 2) {
+            // 3: op1='+', A=1-4, B=6-A, op2='+', C=7
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 1;
+            B = 6 - A;
+            C = 7;
+        } else if (ruleType === 3) {
+            // 4: op1='+', A=1-4, B=7-A, op2='+', C=7
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 1;
+            B = 7 - A;
+            C = 7;
+        } else if (ruleType === 4) {
+            // 5: op1='+', A=6-9, B=15-A, op2='+', C=7
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = 15 - A;
+            C = 7;
+        } else if (ruleType === 5) {
+            // 6: op1='+', A=6-9, B=16-A, op2='+', C=7
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = 16 - A;
+            C = 7;
+        } else if (ruleType === 6) {
+            // 7: op1='+', A=6-9, B=17-A, op2='+', C=7
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = 17 - A;
+            C = 7;
+        } else if (ruleType === 7) {
+            // 8: op1='-', A=6-9, B=A-5, op2='+', C=7
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = A - 5;
+            C = 7;
+        } else if (ruleType === 8) {
+            // 9: op1='-', A=6-9, B=A-6, op2='+', C=7
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = A - 6;
+            C = 7;
+        } else if (ruleType === 9) {
+            // 10: op1='-', A=7-9, B=A-7, op2='+', C=7
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 3) + 7;
+            B = A - 7;
+            C = 7;
+        }
+
+        // Check all are 1-9
+        if ([A, B, C].every(n => n >= 1 && n <= 9)) {
+            expr = `${A} ${op1} ${B} ${op2} ${C}`;
+            result = op1 === '+' ? (A + B) : (A - B);
+            result = op2 === '+' ? (result + C) : (result - C);
+
+            if (result >= 0 && result <= 100 && !seen.has(expr)) {
+                questions.push({ q: expr, a: result.toString() });
+                seen.add(expr);
+            }
+        }
+    }
+
+    return questions;
+}
+
+
+
+function randomChapter12(numQuestions = 10) {
+    const questions = [];
+    const seen = new Set();
+    let attempts = 0;
+
+    while (questions.length < numQuestions && attempts < 8000) {
+        attempts++;
+        let A, B, C, op1, op2, expr, result;
+
+        // 14 total rules
+        let ruleType = Math.floor(Math.random() * 14);
+
+        if (ruleType === 0) {
+            // 1: op1 = '+', A=5/6/7/8, B=6, op2='+', C=1-9
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 5; // 5-8
+            B = 6;
+            C = Math.floor(Math.random() * 9) + 1;
+        } else if (ruleType === 1) {
+            // 2: op1='+', A=1-4, B=5-A, op2='+', C=6
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 1;
+            B = 5 - A;
+            C = 6;
+        } else if (ruleType === 2) {
+            // 3: op1='+', A=1-4, B=6-A, op2='+', C=6
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 1;
+            B = 6 - A;
+            C = 6;
+        } else if (ruleType === 3) {
+            // 4: op1='+', A=1-4, B=7-A, op2='+', C=6
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 1;
+            B = 7 - A;
+            C = 6;
+        } else if (ruleType === 4) {
+            // 5: op1='+', A=1-4, B=8-A, op2='+', C=6
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 1;
+            B = 8 - A;
+            C = 6;
+        } else if (ruleType === 5) {
+            // 6: op1='+', A=6-9, B=15-A, op2='+', C=6
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = 15 - A;
+            C = 6;
+        } else if (ruleType === 6) {
+            // 7: op1='+', A=6-9, B=16-A, op2='+', C=6
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = 16 - A;
+            C = 6;
+        } else if (ruleType === 7) {
+            // 8: op1='+', A=6-9, B=17-A, op2='+', C=6
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = 17 - A;
+            C = 6;
+        } else if (ruleType === 8) {
+            // 9: op1='+', A=6-9, B=18-A, op2='+', C=6
+            op1 = '+';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = 18 - A;
+            C = 6;
+        } else if (ruleType === 9) {
+            // 10: op1='-', A=6-9, B=A-5, op2='+', C=6
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = A - 5;
+            C = 6;
+        } else if (ruleType === 10) {
+            // 11: op1='-', A=6-9, B=A-6, op2='+', C=6
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 6;
+            B = A - 6;
+            C = 6;
+        } else if (ruleType === 11) {
+            // 12: op1='-', A=7-9, B=A-7, op2='+', C=6
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 3) + 7;
+            B = A - 7;
+            C = 6;
+        } else if (ruleType === 12) {
+            // 13: op1='-', A=8-9, B=A-8, op2='+', C=6
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 2) + 8;
+            B = A - 8;
+            C = 6;
+        }
+
+        // Only allow A, B, C in 1-9
+        if ([A, B, C].every(n => n >= 1 && n <= 9)) {
+            expr = `${A} ${op1} ${B} ${op2} ${C}`;
+            result = op1 === '+' ? (A + B) : (A - B);
+            result = op2 === '+' ? (result + C) : (result - C);
+
+            if (result >= 0 && result <= 100 && !seen.has(expr)) {
+                questions.push({ q: expr, a: result.toString() });
+                seen.add(expr);
+            }
+        }
+    }
+    return questions;
+}
+
+function randomChapter13(numQuestions = 10) {
+    const questions = [];
+    const seen = new Set();
+    let attempts = 0;
+
+    while (questions.length < numQuestions && attempts < 2000) {
+        attempts++;
+        let A, B, C, op1, op2, expr, result;
+
+        // Randomly choose one of the three rules
+        const ruleType = Math.floor(Math.random() * 3);
+
+        if (ruleType === 0) {
+            // Rule 1: '-'  A=14, B=9, op2='+', C=1-9
+            op1 = '-';
+            op2 = '+';
+            A = 14;
+            B = 9;
+            C = Math.floor(Math.random() * 9) + 1;
+        } else if (ruleType === 1) {
+            // Rule 2: '-'  A=14, B=9, op2='-', C=1-5
+            op1 = '-';
+            op2 = '-';
+            A = 14;
+            B = 9;
+            C = Math.floor(Math.random() * 5) + 1;
+        } else if (ruleType === 2) {
+            // Rule 3: '+'  A=6-9, B=14-A, op2='-', C=9
+            op1 = '+';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 6; // 6-9
+            B = 14 - A;
+            C = 9;
+            // Make sure B is in 1-9 range
+            if (B < 1 || B > 9) continue;
+        }
+
+        expr = `${A} ${op1} ${B} ${op2} ${C}`;
+        result = op1 === '+' ? (A + B) : (A - B);
+        result = op2 === '+' ? (result + C) : (result - C);
+
+        // Make sure everything is within bounds and not duplicate
+        if ([A, B, C].every(x => x >= 1 && x <= 14) &&
+            result >= 0 && result <= 100 &&
+            !seen.has(expr)
+        ) {
+            questions.push({ q: expr, a: result.toString() });
+            seen.add(expr);
+        }
+    }
+
+    return questions;
+}
+
+
+function randomChapter14(numQuestions = 10) {
+    const questions = [];
+    const seen = new Set();
+    let attempts = 0;
+
+    while (questions.length < numQuestions && attempts < 2000) {
+        attempts++;
+        let A, B, C, op1, op2, expr, result;
+
+        // Randomly choose one of the four rules
+        const ruleType = Math.floor(Math.random() * 4);
+
+        if (ruleType === 0) {
+            // Rule 1: '-'  A=13 or 14, B=8, op2='+', C=1-9
+            op1 = '-';
+            op2 = '+';
+            A = Math.random() < 0.5 ? 13 : 14;
+            B = 8;
+            C = Math.floor(Math.random() * 9) + 1;
+        } else if (ruleType === 1) {
+            // Rule 2: '-'  A=13 or 14, B=8, op2='-', C=1-5
+            op1 = '-';
+            op2 = '-';
+            A = Math.random() < 0.5 ? 13 : 14;
+            B = 8;
+            C = Math.floor(Math.random() * 5) + 1;
+        } else if (ruleType === 2) {
+            // Rule 3: '+'  A=6-9, B=14-A, op2='-', C=8
+            op1 = '+';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 6; // 6-9
+            B = 14 - A;
+            C = 8;
+            if (B < 1 || B > 9) continue;
+        } else if (ruleType === 3) {
+            // Rule 4: '+'  A=6-9, B=13-A, op2='-', C=8
+            op1 = '+';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 6; // 6-9
+            B = 13 - A;
+            C = 8;
+            if (B < 1 || B > 9) continue;
+        }
+
+        expr = `${A} ${op1} ${B} ${op2} ${C}`;
+        result = op1 === '+' ? (A + B) : (A - B);
+        result = op2 === '+' ? (result + C) : (result - C);
+
+        // Check values and uniqueness
+        if (
+            [A, B, C].every(x => x >= 1 && x <= 14) &&
+            result >= 0 && result <= 100 &&
+            !seen.has(expr)
+        ) {
+            questions.push({ q: expr, a: result.toString() });
+            seen.add(expr);
+        }
+    }
+
+    return questions;
+}
+
+
+function randomChapter15(numQuestions = 10) {
+    const questions = [];
+    const seen = new Set();
+    let attempts = 0;
+
+    while (questions.length < numQuestions && attempts < 2000) {
+        attempts++;
+        let A, B, C, op1, op2, expr, result;
+
+        // Randomly pick a rule (there are 6 rules)
+        let ruleType = Math.floor(Math.random() * 6);
+
+        if (ruleType === 0) {
+            // Rule 1: '-' A=12,13,14 B=7 op2='+' C=1-9
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 3) + 12; // 12-14
+            B = 7;
+            C = Math.floor(Math.random() * 9) + 1;
+        } else if (ruleType === 1) {
+            // Rule 2: '-' A=12,13,14 B=7 op2='-' C=1-5
+            op1 = '-';
+            op2 = '-';
+            A = Math.floor(Math.random() * 3) + 12; // 12-14
+            B = 7;
+            C = Math.floor(Math.random() * 5) + 1;
+        } else if (ruleType === 2) {
+            // Rule 3: '+' A=6-9 B=14-A op2='-' C=7
+            op1 = '+';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 6; // 6-9
+            B = 14 - A;
+            C = 7;
+            if (B < 1 || B > 9) continue;
+        } else if (ruleType === 3) {
+            // Rule 4: '+' A=6-9 B=13-A op2='-' C=7
+            op1 = '+';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 6; // 6-9
+            B = 13 - A;
+            C = 7;
+            if (B < 1 || B > 9) continue;
+        } else if (ruleType === 4) {
+            // Rule 5: '+' A=6-9 B=12-A op2='-' C=7
+            op1 = '+';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 6; // 6-9
+            B = 12 - A;
+            C = 7;
+            if (B < 1 || B > 9) continue;
+        }
+
+        expr = `${A} ${op1} ${B} ${op2} ${C}`;
+        result = op1 === '+' ? (A + B) : (A - B);
+        result = op2 === '+' ? (result + C) : (result - C);
+
+        // All values in allowed range, uniqueness check
+        if (
+            [A, B, C].every(x => x >= 1 && x <= 14) &&
+            result >= 0 && result <= 100 &&
+            !seen.has(expr)
+        ) {
+            questions.push({ q: expr, a: result.toString() });
+            seen.add(expr);
+        }
+    }
+
+    return questions;
+}
+
+function randomChapter16(numQuestions = 10) {
+    const questions = [];
+    const seen = new Set();
+    let attempts = 0;
+
+    while (questions.length < numQuestions && attempts < 3000) {
+        attempts++;
+        let A, B, C, op1, op2, expr, result;
+
+        // There are 6 rules
+        let ruleType = Math.floor(Math.random() * 6);
+
+        if (ruleType === 0) {
+            // Rule 1: '-' A=11,12,13,14 B=6 op2='+' C=1-9
+            op1 = '-';
+            op2 = '+';
+            A = Math.floor(Math.random() * 4) + 11; // 11-14
+            B = 6;
+            C = Math.floor(Math.random() * 9) + 1; // 1-9
+        } else if (ruleType === 1) {
+            // Rule 2: '-' A=11,12,13,14 B=6 op2='-' C=1-5
+            op1 = '-';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 11; // 11-14
+            B = 6;
+            C = Math.floor(Math.random() * 5) + 1; // 1-5
+        } else if (ruleType === 2) {
+            // Rule 3: '+' A=6-9 B=14-A op2='-' C=6
+            op1 = '+';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 6; // 6-9
+            B = 14 - A;
+            C = 6;
+            if (B < 1 || B > 9) continue;
+        } else if (ruleType === 3) {
+            // Rule 4: '+' A=6-9 B=13-A op2='-' C=6
+            op1 = '+';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 6; // 6-9
+            B = 13 - A;
+            C = 6;
+            if (B < 1 || B > 9) continue;
+        } else if (ruleType === 4) {
+            // Rule 5: '+' A=6-9 B=12-A op2='-' C=6
+            op1 = '+';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 6; // 6-9
+            B = 12 - A;
+            C = 6;
+            if (B < 1 || B > 9) continue;
+        } else if (ruleType === 5) {
+            // Rule 6: '+' A=6-9 B=11-A op2='-' C=6
+            op1 = '+';
+            op2 = '-';
+            A = Math.floor(Math.random() * 4) + 6; // 6-9
+            B = 11 - A;
+            C = 6;
+            if (B < 1 || B > 9) continue;
+        }
+
+        expr = `${A} ${op1} ${B} ${op2} ${C}`;
+        result = op1 === '+' ? (A + B) : (A - B);
+        result = op2 === '+' ? (result + C) : (result - C);
+
+        // All values in allowed range, uniqueness check
+        if (
+            [A, B, C].every(x => x >= 1 && x <= 14) &&
+            result >= 0 && result <= 100 &&
+            !seen.has(expr)
+        ) {
+            questions.push({ q: expr, a: result.toString() });
+            seen.add(expr);
+        }
+    }
+
+    return questions;
+}
+
+function randomChapter17(numQuestions = 10) {
+    const questions = [];
+    let attempts = 0;
+    const ops = ["+", "-"];
+
+    while (questions.length < numQuestions && attempts < 3000) {
+        attempts++;
+        const A = Math.floor(Math.random() * 9) + 1;
+        const B = Math.floor(Math.random() * 9) + 1;
+        const C = Math.floor(Math.random() * 9) + 1;
+        const op1 = ops[Math.floor(Math.random() * 2)];
+        const op2 = ops[Math.floor(Math.random() * 2)];
+
+        // If op1 is '-', ensure A >= B (A-B not negative)
+        if (op1 === "-" && A < B) continue;
+
+        // Calculate intermediate step
+        let step1 = op1 === "+" ? A + B : A - B;
+
+        // If op2 is '-' ensure step1 >= C ((A+-B)-C not negative)
+        if (op2 === "-" && step1 < C) continue;
+
+        // Calculate final result
+        let D = op2 === "+" ? step1 + C : step1 - C;
+
+        // D must be in 0-9
+        if (D >= 0 && D <= 9) {
+            questions.push({
+                q: `${A} ${op1} ${B} ${op2} ${C}`,
+                a: D.toString()
+            });
+        }
+    }
+
+    return questions;
+}
+
+function randomChapter18(numQuestions = 10) {
+    const questions = [];
+    let attempts = 0;
+    const ops = ["+", "-"];
+
+    while (questions.length < numQuestions && attempts < 10000) {
+        attempts++;
+        const A = Math.floor(Math.random() * 59) + 1;
+        const B = Math.floor(Math.random() * 59) + 1;
+        const C = Math.floor(Math.random() * 59) + 1;
+        const op1 = ops[Math.floor(Math.random() * 2)];
+        const op2 = ops[Math.floor(Math.random() * 2)];
+
+        // If op1 is '-', ensure A >= B (A-B not negative)
+        if (op1 === "-" && A < B) continue;
+
+        // Calculate intermediate step
+        let step1 = op1 === "+" ? A + B : A - B;
+
+        // If op2 is '-', ensure step1 >= C
+        if (op2 === "-" && step1 < C) continue;
+
+        // Calculate final result
+        let D = op2 === "+" ? step1 + C : step1 - C;
+
+        // D must be in 10–99
+        if (D >= 10 && D <= 99) {
+            questions.push({
+                q: `${A} ${op1} ${B} ${op2} ${C}`,
+                a: D.toString()
+            });
+        }
+    }
+
+    return questions;
+}
+
+function randomChapter19(numQuestions = 10) {
+    const questions = [];
+    let attempts = 0;
+    const ops = ["+", "-"];
+
+    while (questions.length < numQuestions && attempts < 30000) {
+        attempts++;
+        const A = Math.floor(Math.random() * 99) + 1;
+        const B = Math.floor(Math.random() * 99) + 1;
+        const C = Math.floor(Math.random() * 99) + 1;
+        const op1 = ops[Math.floor(Math.random() * 2)];
+        const op2 = ops[Math.floor(Math.random() * 2)];
+
+        // Ensure no negatives after first op
+        if (op1 === "-" && A < B) continue;
+
+        let step1 = op1 === "+" ? A + B : A - B;
+
+        // Ensure no negatives after second op
+        if (op2 === "-" && step1 < C) continue;
+
+        let D = op2 === "+" ? step1 + C : step1 - C;
+
+        // D must be 100–999
+        if (D >= 100 && D <= 999) {
+            questions.push({
+                q: `${A} ${op1} ${B} ${op2} ${C}`,
+                a: D.toString()
+            });
+        }
+    }
+
+    return questions;
+}
+
+
+function randomChapter20(numQuestions = 10) {
+    const questions = [];
+    let attempts = 0;
+    const ops = ["+", "-"];
+
+    while (questions.length < numQuestions && attempts < 40000) {
+        attempts++;
+
+        const A = Math.floor(Math.random() * 999) + 1;
+        const B = Math.floor(Math.random() * 999) + 1;
+        const C = Math.floor(Math.random() * 999) + 1;
+        const op1 = ops[Math.floor(Math.random() * 2)];
+        const op2 = ops[Math.floor(Math.random() * 2)];
+
+        // A-B must not be negative
+        if (op1 === "-" && A < B) continue;
+
+        let step1 = op1 === "+" ? A + B : A - B;
+
+        // (A+-B)-C must not be negative
+        if (op2 === "-" && step1 < C) continue;
+
+        let D = op2 === "+" ? step1 + C : step1 - C;
+
+        // D must be 1000–9999
+        if (D >= 1000 && D <= 9999) {
+            questions.push({
+                q: `${A} ${op1} ${B} ${op2} ${C}`,
+                a: D.toString()
+            });
+        }
+    }
+
+    return questions;
+}
+
+
             // Settings & state
 
             let numQuestions = 10,
@@ -1519,9 +2238,55 @@ function randomChapter9(numQuestions = 10) {
                 // ---- choose which generator to use ----
                 const url = new URL(location.href);
                 const chapter = parseInt(url.searchParams.get("chapter") || "1", 10);
-                 if (chapter >= 9) {
+
+                    if (chapter >= 20) {
+                    QUESTIONS = randomChapter20(numQuestions);
+                    console.log("Generator used → randomChapter20");
+
+                 } else if (chapter >= 19) {
+                    QUESTIONS = randomChapter19(numQuestions);
+                    console.log("Generator used → randomChapter19");
+
+                 } else if (chapter >= 18) {
+                    QUESTIONS = randomChapter18(numQuestions);
+                    console.log("Generator used → randomChapter18");
+
+                 } else if (chapter >= 17) {
+                    QUESTIONS = randomChapter17(numQuestions);
+                    console.log("Generator used → randomChapter17");
+
+                 } else if (chapter >= 16) {
+                    QUESTIONS = randomChapter16(numQuestions);
+                    console.log("Generator used → randomChapter16");
+
+                } else if (chapter >= 15) {
+                    QUESTIONS = randomChapter15(numQuestions);
+                    console.log("Generator used → randomChapter15");
+
+                } else if (chapter >= 14) {
+                    QUESTIONS = randomChapter14(numQuestions);
+                    console.log("Generator used → randomChapter14");
+
+                } else if (chapter >= 13) {
+                    QUESTIONS = randomChapter13(numQuestions);
+                    console.log("Generator used → randomChapter13");
+
+                } else if (chapter >= 12) {
+                    QUESTIONS = randomChapter12(numQuestions);
+                    console.log("Generator used → randomChapter12");
+
+                } else if (chapter >= 11) {
+                    QUESTIONS = randomChapter11(numQuestions);
+                    console.log("Generator used → randomChapter11");
+
+                } else if (chapter >= 10) {
+                    QUESTIONS = randomChapter10(numQuestions);
+                    console.log("Generator used → randomChapter10");
+
+                } else if (chapter >= 9) {
                     QUESTIONS = randomChapter9(numQuestions);
                     console.log("Generator used → randomChapter9");
+
                 } else if (chapter === 8) {
                     // For chapter 8, alternate questions from randomChapter6 and randomChapter7
                     const half = Math.ceil(numQuestions / 2);
@@ -1529,12 +2294,15 @@ function randomChapter9(numQuestions = 10) {
                     const ch7 = randomChapter7(numQuestions - half);
                     QUESTIONS = alternateQuestions1(ch6, ch7, numQuestions);
                     console.log("Generator used → MIXED randomChapter6 + randomChapter7");
+
                 } else if (chapter >= 7) {
                     QUESTIONS = randomChapter7(numQuestions);
                     console.log("Generator used → randomChapter7");
+
                 } else if (chapter >= 6) {
                     QUESTIONS = randomChapter6(numQuestions);
                     console.log("Generator used → randomChapter6");
+
                 } else if (chapter === 5) {
                     // For chapter 5, alternate questions from randomChapter3 and randomChapter4
                     const half = Math.ceil(numQuestions / 2);
@@ -1542,15 +2310,19 @@ function randomChapter9(numQuestions = 10) {
                     const ch4 = randomChapter4(numQuestions - half);
                     QUESTIONS = alternateQuestions(ch3, ch4, numQuestions);
                     console.log("Generator used → MIXED randomChapter3 + randomChapter4");
+
                 } else if (chapter >= 4) {
                     QUESTIONS = randomChapter4(numQuestions);
                     console.log("Generator used → randomChapter4");
+
                 } else if (chapter >= 3) {
                     QUESTIONS = randomChapter3(numQuestions);
                     console.log("Generator used → randomChapter3");
+
                 } else if (chapter >= 2) {
                     QUESTIONS = randomChapter2(numQuestions);
                     console.log("Generator used → randomChapter2");
+
                 } else {
                     QUESTIONS = randomChapter1(numQuestions, numNumbers);
                     console.log("Generator used → randomChapter1");
